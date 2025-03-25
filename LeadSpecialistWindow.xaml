@@ -1,0 +1,18 @@
+﻿<Window x:Class="AGSS.LeadSpecialistWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AGSS"
+        mc:Ignorable="d"
+        Title="LeadSpecialistWindow" Height="450" Width="800" Background="Gray">
+    <Grid>
+        <Label Content="Проект" Background="LightGray"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="400"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="0,26,0,0" VerticalAlignment="Top" Width="125" Height="33"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="125,26,0,0" VerticalAlignment="Top" Height="33" Width="131"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="256,26,0,0" VerticalAlignment="Top" Height="33" Width="144"/>
+        <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,59,400,0"/>
+        <Label Content="Выберите данные для добавления и редактирования" HorizontalAlignment="Left" Margin="400,0,0,0" VerticalAlignment="Top" Width="400" HorizontalContentAlignment="Center" Background="white"/>
+
+    </Grid>
+</Window>
