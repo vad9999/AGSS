@@ -5,8 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGSS"
         mc:Ignorable="d"
-        Title="ChiefEngineerWindow" Height="450" Width="800" Background="Gray">
+        Title="ChiefEngineerWindow" Height="543" Width="1023" Background="Gray">
     <Grid>
-        
+        <TreeView x:Name="DataTree" ItemsSource="{Binding Profiles}" Margin="0,22,0,0" HorizontalAlignment="Left" Width="166"/>
+        <ComboBox x:Name="ProjectCombo" HorizontalAlignment="Left" VerticalAlignment="Top" Width="166" SelectionChanged="ProjectCombo_SelectionChanged"/>
+        <ListView x:Name="ProjectView" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="166,0,0,0" HorizontalAlignment="Left" Width="524" Height="80" VerticalAlignment="Top" >
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Название">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding ProjectName, UpdateSourceTrigger=PropertyChanged}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <ListView d:ItemsSource="{d:SampleData ItemCount=5}" Margin="166,0,0,0" HorizontalAlignment="Left" Width="524" Height="365" VerticalAlignment="Center">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>

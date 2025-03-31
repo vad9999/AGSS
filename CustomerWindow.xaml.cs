@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,10 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
+using AGSS.Entities;
+using AGSS.Repositories;
 using Microsoft.Data.SqlClient;
 
 namespace AGSS
@@ -21,162 +25,216 @@ namespace AGSS
     /// </summary>
     public partial class CustomerWindow : Window
     {
-        string connectionString;
         int ID;
 
-        public CustomerWindow(string con, int id)
+        public CustomerWindow(int id)
         {
             InitializeComponent();
-            connectionString = con;
             ID = id;
-            if (LoadProjects() != null)
+            LoadProjects();
+        }
+        
+        private void LoadProjects()
+        {
+            using(GravitySurveyOnDeleteNoAction context = new GravitySurveyOnDeleteNoAction())
             {
-                ProjectCombo.ItemsSource = LoadProjects();
+                var names = ProjectRepository.GetProjectNames(ID, context);
+                if (names != null)
+                {
+                    ProjectCombo.ItemsSource = names;
+                }
+                else
+                    MessageBox.Show("Нет данных о проектах");
             }
         }
-
-        private List<string> LoadProjects()
+       
+        private void ExitBTN_Click(object sender, RoutedEventArgs e)
         {
-            List<string> names = new List<string>();
-            try
-            {
-                SqlConnection connection = new SqlConnection(connectionString);
-                connection.Open();
-
-                SqlCommand sqlCommand = new SqlCommand($"select ProjectName from Project where CustomerID = {ID};", connection);
-                SqlDataReader reader = sqlCommand.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    names.Add(reader["ProjectName"].ToString());
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            return names;
+            this.Close();
         }
 
         private void DataTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if (DataTree.SelectedItem is TreeViewItem selectedItem)
             {
-                switch(selectedItem.Header.ToString())
+                if (ProjectCombo.SelectedItem != null)
                 {
-                    case "Площадь":
-                        if(GetDataOfArea() != null)
-                        {
-                            Data.ItemsSource = GetDataOfArea().DefaultView;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Данные о площадях не найдены");
-                        }
-                        break;
-                    case "Профиль":
-                        break;
-                    case "Канал 1":
-                        break;
-                    case "Канал 2":
-                        break;
-                    case "Канал 3":
-                        break;
-                    case "Полёт":
-                        break;
-                    case "Спектромер":
-                        break;
-                    case "Метаданные":
-                        break;
-
-
-                }
-            }
-        }
-
-        private int? GetProjectIDByName()
-        {
-            int? id = null;
-            if (ProjectCombo.SelectedItem != null)
-            {
-                try
-                {
-                    SqlConnection connection = new SqlConnection(connectionString);
-                    connection.Open();
-
-                    SqlCommand command = new SqlCommand($"select ProjectID from Project where ProjectName = '{ProjectCombo.SelectedItem}' and CustomerID = {ID};", connection);
-                    SqlDataReader reader = command.ExecuteReader();
-                    if (reader.Read())
+                    using (var context = new GravitySurveyOnDeleteNoAction())
                     {
-                        id = reader.GetInt32(0);
+                        switch (selectedItem.Header.ToString())
+                        {
+                            case "Площадь":
+                                AreaColumns();
+
+                                var areaData = AreaRepository.GetDataOfArea(
+                                    ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context),
+                                    context
+                                );
+
+                                Data.ItemsSource = areaData;
+                                break;
+                            case "Профиль":
+                                ProfileColumns();
+
+                                var profileData = ProfileRepository.GetDataOfProfile(
+                                    AreaRepository.GetAreaIDByProjectID(
+                                        ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context), 
+                                    context), 
+                                context);
+
+                                Data.ItemsSource = profileData;
+                                break;
+                            case "Канал 1":
+                                ChannelsColumns();
+
+                                var channel1Data = ChannelsRepository.GetDataOfChannel1(
+                                    AreaRepository.GetAreaIDByProjectID(
+                                        ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context),
+                                        context),
+                                    context);
+
+                                Data.ItemsSource = channel1Data;
+                                break;
+                            case "Канал 2":
+
+                                var channel2Data = ChannelsRepository.GetDataOfChannel2(
+                                    AreaRepository.GetAreaIDByProjectID(
+                                        ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context),
+                                        context),
+                                    context);
+
+                                Data.ItemsSource = channel2Data;
+                                ChannelsColumns();
+                                break;
+                            case "Канал 3":
+
+                                var channel3Data = ChannelsRepository.GetDataOfChannel3(
+                                    AreaRepository.GetAreaIDByProjectID(
+                                        ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context),
+                                        context),
+                                    context);
+
+                                Data.ItemsSource = channel3Data;
+                                ChannelsColumns();
+                                break;
+                            case "Полет":
+                                FlightColumns();
+
+                                var flightData = FlightRepository.GetDataOfFlight(
+                                    ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context),
+                                    context);
+
+                                Data.ItemsSource = flightData;
+                                break;
+                            case "Спектрометр":
+                                SpectrometerColumns();
+
+                                var specData = SpectrometerRepository.GetDataOfSpectrometer(
+                                    FlightRepository.GetFlightIDByProjectID(
+                                        ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context),
+                                        context),
+                                    context);
+
+                                Data.ItemsSource = specData;
+                                break;
+                            case "Метаданные":
+                                MetadataColumns();
+
+                                var metaData = MetadataRepository.GetDataOfMetadata(
+                                    SpectrometerRepository.GetSpectrometerIDByFlightID(
+                                    FlightRepository.GetFlightIDByProjectID(
+                                        ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context),
+                                        context),
+                                    context), 
+                                    context);
+
+                                Data.ItemsSource = metaData;
+                                break;
+                        }
                     }
                 }
-                catch (Exception ex)
+            }
+        }
+
+        private void AreaColumns()
+        {
+            Data.View = new GridView
+            {
+                Columns =
                 {
-                    MessageBox.Show(ex.Message);
+                    new GridViewColumn { Header = "Геологическая информация", DisplayMemberBinding = new Binding("GeologicalInfo") },
+                    new GridViewColumn { Header = "Область", DisplayMemberBinding = new Binding("Area1") },
+                    new GridViewColumn { Header = "Количество профилей", DisplayMemberBinding = new Binding("ProfileCount") }
                 }
-            }
-            else
-            {
-                MessageBox.Show("Выберите проект!");
-            }
-            return id;
+            };
         }
 
-        private int? GetAreaIDbyProjectID()
+        private void ProfileColumns()
         {
-
-        }
-
-        private DataTable GetDataOfArea()
-        {
-            DataTable data = new DataTable();
-            try
+            Data.View = new GridView
             {
-                SqlConnection connection = new SqlConnection(connectionString);
-                connection.Open();
-
-                int? ProjectID = GetProjectIDByName();
-                if(ProjectID != null)
+                Columns =
                 {
-                    SqlCommand command = new SqlCommand($"select GeologicalInfo, Area, ProfileCount from Area where ProjectID = {ProjectID};", connection);
-                    SqlDataAdapter dataAdapter = new SqlDataAdapter(command);
-                    dataAdapter.Fill(data);
+                    new GridViewColumn { Header = "Номер Профиля", DisplayMemberBinding = new Binding("ProfileId") },
+                    new GridViewColumn { Header = "X", DisplayMemberBinding = new Binding("X") },
+                    new GridViewColumn { Header = "Y", DisplayMemberBinding = new Binding("Y") }
                 }
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            return data;
+            };
         }
 
-        private DataTable GetDataofProfile()
+        private void ChannelsColumns()
         {
-            DataTable data = new DataTable();
-            try
+            Data.View = new GridView
             {
-                SqlConnection connection = new SqlConnection(connectionString);
-                connection.Open();
-
-                int? ProjectID = GetProjectIDByName();
-                if (ProjectID != null)
+                Columns =
                 {
-                    SqlCommand command = new SqlCommand($"SELECT p.ProfileID, p.StartX, p.StartY, p.EndX, p.EndY, \r\n       STRING_AGG(CONCAT(pc.X, ',', pc.Y), '; ') AS Coordinates\r\nFROM Profile p\r\nJOIN ProfileCoordinates pc ON p.ProfileID = pc.ProfileID\r\nWHERE p.AreaID = 1\r\nGROUP BY p.ProfileID, p.StartX, p.StartY, p.EndX, p.EndY;", connection);
-                    SqlDataAdapter dataAdapter = new SqlDataAdapter(command);
-                    dataAdapter.Fill(data);
+                    new GridViewColumn { Header = "Номер Профиля", DisplayMemberBinding = new Binding("ProfileId") },
+                    new GridViewColumn { Header = "X", DisplayMemberBinding = new Binding("X") },
+                    new GridViewColumn { Header = "Y", DisplayMemberBinding = new Binding("Y") },
+                    new GridViewColumn { Header = "Значение", DisplayMemberBinding = new Binding("MeasurementResult")}
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            return data;
+            };
         }
 
-        private void ExitBTN_Click(object sender, RoutedEventArgs e)
+        private void FlightColumns()
         {
-            this.Close();
+            Data.View = new GridView
+            {
+                Columns =
+                {
+                    new GridViewColumn { Header = "Дата начала полета", DisplayMemberBinding = new Binding("StartDateTime") },
+                    new GridViewColumn { Header = "Дата конца полета", DisplayMemberBinding = new Binding("EndDateTime") },
+                    new GridViewColumn { Header = "Высота над уровнем моря", DisplayMemberBinding = new Binding("AltitudeAboveSea") },
+                    new GridViewColumn { Header = "Высота над уровнем земли", DisplayMemberBinding = new Binding("AltitudeAboveGround")},
+                    new GridViewColumn { Header = "Средняя скорость", DisplayMemberBinding = new Binding("Speed")}
+                }
+            };
+        }
+
+        private void SpectrometerColumns()
+        {
+            Data.View = new GridView
+            {
+                Columns =
+                {
+                    new GridViewColumn { Header = "Дата начала полета", DisplayMemberBinding = new Binding("MeasurementTime") },
+                    new GridViewColumn { Header = "Дата конца полета", DisplayMemberBinding = new Binding("PulseCount") },
+                    new GridViewColumn { Header = "Высота над уровнем моря", DisplayMemberBinding = new Binding("TotalCount") },
+                    new GridViewColumn { Header = "Высота над уровнем земли", DisplayMemberBinding = new Binding("EnergyWindowsCount")}
+                }
+            };
+        }
+
+        private void MetadataColumns()
+        {
+            Data.View = new GridView
+            {
+                Columns =
+                {
+                    new GridViewColumn { Header = "Дата начала полета", DisplayMemberBinding = new Binding("EquipmentDescription") },
+                    new GridViewColumn { Header = "Дата конца полета", DisplayMemberBinding = new Binding("Notes") }
+                }
+            };
         }
     }
 }

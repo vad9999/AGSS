@@ -11,7 +11,6 @@
         <Button Content="Button" HorizontalAlignment="Left" Margin="0,26,0,0" VerticalAlignment="Top" Width="125" Height="33"/>
         <Button Content="Button" HorizontalAlignment="Left" Margin="125,26,0,0" VerticalAlignment="Top" Height="33" Width="131"/>
         <Button Content="Button" HorizontalAlignment="Left" Margin="256,26,0,0" VerticalAlignment="Top" Height="33" Width="144"/>
-        <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,59,400,0"/>
         <Label Content="Выберите данные для добавления и редактирования" HorizontalAlignment="Left" Margin="400,0,0,0" VerticalAlignment="Top" Width="400" HorizontalContentAlignment="Center" Background="white"/>
 
     </Grid>

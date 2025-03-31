@@ -7,10 +7,9 @@
         mc:Ignorable="d"
         Title="CustomerWindow" Height="450" Width="800" Background="Gray">
     <Grid>
-        <DataGrid x:Name="Data" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="56,73,343,46"/>
-        <ComboBox x:Name="ProjectCombo" HorizontalAlignment="Left" Margin="56,10,0,0" VerticalAlignment="Top" Width="253"/>
-        <Button x:Name="ExitBTN" Content="Выйти" HorizontalAlignment="Left" Margin="668,10,0,0" VerticalAlignment="Top" Height="38" Width="104" Click="ExitBTN_Click"/>
-        <TreeView x:Name="DataTree" Margin="475,63,0,0" Background="Gray" Height="220" VerticalAlignment="Top" HorizontalAlignment="Left" Width="297" SelectedItemChanged="DataTree_SelectedItemChanged">
+        <ComboBox x:Name="ProjectCombo" HorizontalAlignment="Left" VerticalAlignment="Top" Width="172"/>
+        <Button x:Name="ExitBTN" Content="Выйти" Margin="662,374,0,0" VerticalAlignment="Top" Height="38" Click="ExitBTN_Click" FontSize="16" HorizontalAlignment="Left" Width="104"/>
+        <TreeView x:Name="DataTree" Margin="0,22,0,0" FontSize="18" SelectedItemChanged="DataTree_SelectedItemChanged" HorizontalAlignment="Left" Width="172">
             <TreeViewItem Header="Площадь">
                 <TreeViewItem Header="Профиль">
                     <TreeViewItem Header="Канал 1"/>
@@ -18,11 +17,18 @@
                     <TreeViewItem Header="Канал 3"/>
                 </TreeViewItem>
             </TreeViewItem>
-            <TreeViewItem Header="Полёт">
+            <TreeViewItem Header="Полет">
                 <TreeViewItem Header="Спектрометр">
                     <TreeViewItem Header="Метаданные"/>
                 </TreeViewItem>
             </TreeViewItem>
         </TreeView>
+        <ListView x:Name="Data" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="205,78,133,77">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>
