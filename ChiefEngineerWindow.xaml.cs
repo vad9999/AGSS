@@ -56,8 +56,42 @@ namespace AGSS
                     {
                         pr.PropertyChanged += (s, e) => ProjectRepository.SaveChanges((Project)s);
                     }
+                    if(ProjectRepository.GetSpecialistIDByProjectID(ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context), context) != null)
+                    {
+                        var Specialists = new ObservableCollection<LeadSpecialist>(SpecialistRepository.GetDataOfSpecialist((int)ProjectRepository.GetSpecialistIDByProjectID(ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context), context), context));
+                        SpecialistView.ItemsSource = Specialists;
+
+                        foreach (var pr in Specialists)
+                        {
+                            pr.PropertyChanged += (s, e) => SpecialistRepository.SaveChanges((LeadSpecialist)s);
+                        }
+                    }
+
+                    var Engineers = new ObservableCollection<ChiefEnginner>(EngineerRepository.GetDataOfEngineer((int)ProjectRepository.GetEngineerIDByProjectID(ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context), context), context));
+                    EngineerView.ItemsSource = Engineers;
+
+                    foreach (var pr in Engineers)
+                    {
+                        pr.PropertyChanged += (s, e) => EngineerRepository.SaveChanges((ChiefEnginner)s);
+                    }
+
+                    var Analysts = new ObservableCollection<Analyst>(AnalystRepository.GetDataOfAnalyst((int)ProjectRepository.GetAnalystIDByProjectID(ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context), context), context));
+
+                    AnalystView.ItemsSource = Analysts;
+
+                    foreach (var pr in Analysts)
+                    {
+                        pr.PropertyChanged += (s, e) => AnalystRepository.SaveChanges((Analyst)s);
+                    }
+
+
                 }
             }
+        }
+
+        private void DataTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+
         }
     }
 }

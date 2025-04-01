@@ -5,13 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGSS"
         mc:Ignorable="d"
-        Title="ChiefEngineerWindow" Height="543" Width="1023" Background="Gray">
+        Title="ChiefEngineerWindow" Height="795" Width="1329" Background="Gray">
     <Grid>
-        <TreeView x:Name="DataTree" ItemsSource="{Binding Profiles}" Margin="0,22,0,0" HorizontalAlignment="Left" Width="166"/>
+        <TreeView x:Name="DataTree" Margin="0,22,0,0" HorizontalAlignment="Left" Width="166" SelectedItemChanged="DataTree_SelectedItemChanged" FontSize="18">
+            <TreeViewItem Header="Площадь">
+                <TreeViewItem Header="Профиль">
+                    <TreeViewItem Header="Канал 1"/>
+                    <TreeViewItem Header="Канал 2"/>
+                    <TreeViewItem Header="Канал 3"/>
+                </TreeViewItem>
+            </TreeViewItem>
+            <TreeViewItem Header="Полет">
+                <TreeViewItem Header="Спектрометр">
+                    <TreeViewItem Header="Метаданные"/>
+                </TreeViewItem>
+            </TreeViewItem>
+        </TreeView>
         <ComboBox x:Name="ProjectCombo" HorizontalAlignment="Left" VerticalAlignment="Top" Width="166" SelectionChanged="ProjectCombo_SelectionChanged"/>
-        <ListView x:Name="ProjectView" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="166,0,0,0" HorizontalAlignment="Left" Width="524" Height="80" VerticalAlignment="Top" >
+        <ListView x:Name="ProjectView" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="166,31,0,0" HorizontalAlignment="Left" Width="796" Height="62" VerticalAlignment="Top" >
             <ListView.View>
                 <GridView>
+                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding ProjectId}"/>
                     <GridViewColumn Header="Название">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -19,13 +33,158 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
+                    <GridViewColumn Header="Заметки">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="ID заказчика">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding CustomerId, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="ID ведущего спец.">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding LeadSpecialistId, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="ID аналитика">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding AnalystId, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="ID Гл. инженера">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding ChiefEnginnerId, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
-        <ListView d:ItemsSource="{d:SampleData ItemCount=5}" Margin="166,0,0,0" HorizontalAlignment="Left" Width="524" Height="365" VerticalAlignment="Center">
+        <ListView x:Name="SpecialistView" Margin="166,124,0,0" HorizontalAlignment="Left" Width="398" Height="68" VerticalAlignment="Top">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn/>
+                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding LeadSpecialistId}"/>
+                    <GridViewColumn Header="Полное имя">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Номер телефона">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Адрес">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Label Content="Информация о проекте" HorizontalAlignment="Left" Margin="166,0,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="796" HorizontalContentAlignment="Center"/>
+        <Label Content="Информация о ведущем специалисте" HorizontalAlignment="Left" Margin="166,93,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="398" HorizontalContentAlignment="Center"/>
+        <Label Content="Информация об аналитике" HorizontalAlignment="Left" Margin="564,93,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="398" HorizontalContentAlignment="Center"/>
+        <ListView x:Name="AnalystView" Margin="564,124,0,0" Height="68" VerticalAlignment="Top" HorizontalAlignment="Left" Width="398">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding AnalystId}"/>
+                    <GridViewColumn Header="Полное имя">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Номер телефона">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Адрес">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Label Content="Информация об операторе" HorizontalAlignment="Left" Margin="166,192,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="398" HorizontalContentAlignment="Center"/>
+        <Label Content="Информация об главном инженере" HorizontalAlignment="Left" Margin="564,192,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="398" HorizontalContentAlignment="Center"/>
+        <ListView x:Name="OperatorView" Margin="166,223,0,0" HorizontalAlignment="Left" Width="398" Height="71" VerticalAlignment="Top">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding CheifEnginnerId}"/>
+                    <GridViewColumn Header="Полное имя">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Номер телефона">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Адрес">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <ListView x:Name="EngineerView" Margin="564,223,0,0" Height="71" VerticalAlignment="Top" HorizontalAlignment="Left" Width="398">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding OperatorId}"/>
+                    <GridViewColumn Header="Полное имя">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Номер телефона">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Адрес">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>

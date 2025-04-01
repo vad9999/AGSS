@@ -30,6 +30,21 @@ namespace AGSS.Repositories
             return context.Projects.Where(p => p.ProjectId == ProjectID).ToList().Cast<Project>().ToList();
         }
 
+        public static int? GetSpecialistIDByProjectID(int ProjectID, GravitySurveyOnDeleteNoAction context)
+        {
+            return context.Projects.Where(p => p.ProjectId == ProjectID).Select(p => p.LeadSpecialistId).FirstOrDefault();
+        }
+
+        public static int? GetEngineerIDByProjectID(int ProjectID, GravitySurveyOnDeleteNoAction context)
+        {
+            return context.Projects.Where(p => p.ProjectId == ProjectID).Select(p => p.ChiefEnginnerId).FirstOrDefault();
+        }
+
+        public static int? GetAnalystIDByProjectID(int ProjectID, GravitySurveyOnDeleteNoAction context)
+        {
+            return context.Projects.Where(p => p.ProjectId == ProjectID).Select(p => p.AnalystId).FirstOrDefault();
+        }
+
         public static void SaveChanges(Project pr)
         {
             using (var context = new GravitySurveyOnDeleteNoAction())
