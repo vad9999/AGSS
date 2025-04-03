@@ -1,11 +1,12 @@
-﻿<Window x:Class="AGSS.ChiefEngineerWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGSS"
+        xmlns:oxy="http://oxyplot.org/wpf" x:Class="AGSS.ChiefEngineerWindow"
         mc:Ignorable="d"
-        Title="ChiefEngineerWindow" Height="795" Width="1329" Background="Gray">
+        Title="ChiefEngineerWindow" Height="795" Width="1603" Background="Gray">
     <Grid>
         <TreeView x:Name="DataTree" Margin="0,22,0,0" HorizontalAlignment="Left" Width="166" SelectedItemChanged="DataTree_SelectedItemChanged" FontSize="18">
             <TreeViewItem Header="Площадь">
@@ -188,5 +189,25 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Label Content="Данные проекта" HorizontalAlignment="Left" Margin="166,294,0,0" VerticalAlignment="Top" Width="796" FontWeight="Bold" FontSize="16" HorizontalContentAlignment="Center"/>
+        <ListView x:Name="Data" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="166,325,0,0" Height="287" VerticalAlignment="Top" HorizontalAlignment="Left" Width="796">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button x:Name="AddBTN" Content="Добавить" HorizontalAlignment="Left" Margin="171,617,0,0" VerticalAlignment="Top" Height="45" Width="123" FontSize="16" Click="AddBTN_Click"/>
+        <Button x:Name="DeleteBTN" Content="Удалить" HorizontalAlignment="Left" Margin="466,617,0,0" VerticalAlignment="Top" Height="45" Width="123" FontSize="16" Click="DeleteBTN_Click"/>
+        <oxy:PlotView HorizontalAlignment="Left" Margin="1009,328,0,0" VerticalAlignment="Top" Height="392" RenderTransformOrigin="0.5,0.5" Width="546">
+            <oxy:PlotView.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="-1" ScaleY="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </oxy:PlotView.RenderTransform>
+        </oxy:PlotView>
     </Grid>
 </Window>

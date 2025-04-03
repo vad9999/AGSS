@@ -19,6 +19,7 @@ namespace AGSS.Repositories
               (profile, coord) => new
               {
                   profile.ProfileId,
+                  profile.BreaksCount,
                   coord.X,
                   coord.Y
               })

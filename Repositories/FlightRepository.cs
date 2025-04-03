@@ -17,5 +17,10 @@ namespace AGSS.Repositories
         {
             return context.Flights.Where(f => f.ProjectId == ProjectID).Select(f => f.FlightId).FirstOrDefault();
         }
+
+        public static int? GetOperatorIDByFlightID(int flight, GravitySurveyOnDeleteNoAction context)
+        {
+            return context.Flights.Where(f => f.FlightId == flight).Select(f => f.OperatorId).FirstOrDefault();
+        }
     }
 }
