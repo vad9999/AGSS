@@ -111,6 +111,8 @@ namespace AGSS
                         {
                             case "Площадь":
                                 AreaColumns();
+                                AreaCoordinateColumns();
+                                CoordinateView.Visibility = Visibility;
 
                                 var areaData = new ObservableCollection<Area>(AreaRepository.GetDataOfArea(
                                     ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context),
@@ -123,17 +125,47 @@ namespace AGSS
                                 {
                                     pr.PropertyChanged += (s, e) => AreaRepository.SaveChanges((Area)s);
                                 }
+
+                                var coordinates = new ObservableCollection<AreaCoordinate>(AreaRepository.GetAreaCoordinates(
+                                    ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context),
+                                    context
+                                ));
+
+                                CoordinateView.ItemsSource = coordinates;
+
+                                foreach (var pr in coordinates)
+                                {
+                                    pr.PropertyChanged += (s, e) => AreaRepository.SaveChangesCoord((AreaCoordinate)s);
+                                }
                                 break;
                             case "Профиль":
                                 ProfileColumns();
+                                ProfileCoordinateColumns();
+                                CoordinateView.Visibility = Visibility;
 
-                                var profileData = new ObservableCollection<object>( ProfileRepository.GetDataOfProfile(
+                                var profileData = new ObservableCollection<Profile>( ProfileRepository.GetProfiles(
                                     AreaRepository.GetAreaIDByProjectID(
                                         ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context),
                                     context),
                                 context));
 
                                 Data.ItemsSource = profileData;
+
+                                foreach (var pr in profileData)
+                                {
+                                    pr.PropertyChanged += (s, e) => ProfileRepository.SaveChanges((Profile)s);
+                                }
+
+                                var coordinate = new ObservableCollection<ProfileCoordinate>(ProfileRepository.GetProfileCoordinates(AreaRepository.GetAreaIDByProjectID(
+                                        ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context),
+                                    context), context));
+
+                                CoordinateView.ItemsSource = coordinate;
+
+                                foreach (var pr in coordinate)
+                                {
+                                    pr.PropertyChanged += (s, e) => ProfileRepository.SaveChangesCoord((ProfileCoordinate)s);
+                                }
                                 break;
                             case "Канал 1":
                                 ChannelsColumns();
@@ -235,6 +267,18 @@ namespace AGSS
             };
         }
 
+        private void AreaCoordinateColumns()
+        {
+            CoordinateView.View = new GridView
+            {
+                Columns =
+                {
+                    new GridViewColumn { Header = "X", CellTemplate = CreateTextBoxTemplate("X") },
+                    new GridViewColumn { Header = "Y", CellTemplate = CreateTextBoxTemplate("Y") }
+                }
+            };
+        }
+
         private void ProfileColumns()
         {
             Data.View = new GridView
@@ -242,7 +286,18 @@ namespace AGSS
                 Columns =
                 {
                     new GridViewColumn { Header = "Номер Профиля", DisplayMemberBinding = new Binding("ProfileId") },
-                    new GridViewColumn { Header = "Количество изломов", CellTemplate = CreateTextBoxTemplate("BreaksCount")},
+                    new GridViewColumn { Header = "Количество изломов", CellTemplate = CreateTextBoxTemplate("BreaksCount")}
+                }
+            };
+        }
+
+        private void ProfileCoordinateColumns()
+        {
+            CoordinateView.View = new GridView
+            {
+                Columns =
+                {
+                    new GridViewColumn { Header = "Номер Профиля", DisplayMemberBinding = new Binding("ProfileId") },
                     new GridViewColumn { Header = "X", CellTemplate = CreateTextBoxTemplate("X") },
                     new GridViewColumn { Header = "Y", CellTemplate = CreateTextBoxTemplate("Y") }
                 }

@@ -190,7 +190,7 @@
             </ListView.View>
         </ListView>
         <Label Content="Данные проекта" HorizontalAlignment="Left" Margin="166,294,0,0" VerticalAlignment="Top" Width="796" FontWeight="Bold" FontSize="16" HorizontalContentAlignment="Center"/>
-        <ListView x:Name="Data" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="166,325,0,0" Height="287" VerticalAlignment="Top" HorizontalAlignment="Left" Width="796">
+        <ListView x:Name="Data" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="166,325,0,0" Height="287" VerticalAlignment="Top" HorizontalAlignment="Left" Width="614">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
@@ -209,5 +209,12 @@
                 </TransformGroup>
             </oxy:PlotView.RenderTransform>
         </oxy:PlotView>
+        <ListView x:Name="CoordinateView" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="802,325,0,0" HorizontalAlignment="Left" Width="160" Height="287" VerticalAlignment="Top" Visibility="Hidden">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>

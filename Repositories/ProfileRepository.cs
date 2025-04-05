@@ -27,5 +27,41 @@ namespace AGSS.Repositories
         .Cast<object>()
         .ToList();
         }
+
+        public static List<Profile> GetProfiles(int area, GravitySurveyOnDeleteNoAction context)
+        {
+            return context.Profiles.Where(p => p.AreaId == area).ToList().Cast<Profile>().ToList();
+        }
+
+        public static List<ProfileCoordinate> GetProfileCoordinates(int area, GravitySurveyOnDeleteNoAction context)
+        {
+            var profileIds = context.Profiles
+                .Where(p => p.AreaId == area)
+                .Select(p => p.ProfileId)
+                .ToList();
+
+            return context.ProfileCoordinates
+                .Where(c => profileIds.Contains(c.ProfileId ?? -1))
+                .ToList();
+        }
+
+
+        public static void SaveChanges(Profile pr)
+        {
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                context.Profiles.Update(pr);
+                context.SaveChanges();
+            }
+        }
+
+        public static void SaveChangesCoord(ProfileCoordinate pr)
+        {
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                context.ProfileCoordinates.Update(pr);
+                context.SaveChanges();
+            }
+        }
     }
 }

@@ -22,11 +22,25 @@ namespace AGSS.Repositories
             return context.Areas.Where(a => a.ProjectId == ProjectID).Select(a => a.AreaId).FirstOrDefault();
         }
 
+        public static List<AreaCoordinate> GetAreaCoordinates(int area, GravitySurveyOnDeleteNoAction context)
+        {
+            return context.AreaCoordinates.Where(a => a.AreaId == area).ToList().Cast<AreaCoordinate>().ToList();
+        }
+
         public static void SaveChanges(Area pr)
         {
             using (var context = new GravitySurveyOnDeleteNoAction())
             {
                 context.Areas.Update(pr);
+                context.SaveChanges();
+            }
+        }
+
+        public static void SaveChangesCoord(AreaCoordinate pr)
+        {
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                context.AreaCoordinates.Update(pr);
                 context.SaveChanges();
             }
         }
