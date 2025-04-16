@@ -37,16 +37,13 @@ namespace AGSS
         
         private void LoadProjects()
         {
-            using(GravitySurveyOnDeleteNoAction context = new GravitySurveyOnDeleteNoAction())
+            var names = ProjectRepository.GetProjectNames(ID);
+            if (names != null)
             {
-                var names = ProjectRepository.GetProjectNames(ID, context);
-                if (names != null)
-                {
-                    ProjectCombo.ItemsSource = names;
-                }
-                else
-                    MessageBox.Show("Нет данных о проектах");
+                ProjectCombo.ItemsSource = names;
             }
+            else
+                MessageBox.Show("Нет данных о проектах");
         }
        
         private void ExitBTN_Click(object sender, RoutedEventArgs e)
@@ -60,98 +57,79 @@ namespace AGSS
             {
                 if (ProjectCombo.SelectedItem != null)
                 {
-                    using (var context = new GravitySurveyOnDeleteNoAction())
+                    switch (selectedItem.Header.ToString())
                     {
-                        switch (selectedItem.Header.ToString())
-                        {
-                            case "Площадь":
-                                AreaColumns();
+                        case "Площадь":
+                            AreaColumns();
 
-                                var areaData = AreaRepository.GetDataOfArea(
-                                    ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context),
-                                    context
-                                );
+                            var areaData = AreaRepository.GetDataOfArea(
+                                ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString()));
 
-                                Data.ItemsSource = areaData;
-                                break;
-                            case "Профиль":
-                                ProfileColumns();
+                            Data.ItemsSource = areaData;
+                            break;
+                        case "Профиль":
+                            ProfileColumns();
 
-                                var profileData = ProfileRepository.GetDataOfProfile(
-                                    AreaRepository.GetAreaIDByProjectID(
-                                        ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context), 
-                                    context), 
-                                context);
+                            var profileData = ProfileRepository.GetDataOfProfile(
+                                AreaRepository.GetAreaIDByProjectID(
+                                    ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString())));
 
-                                Data.ItemsSource = profileData;
-                                break;
-                            case "Канал 1":
-                                ChannelsColumns();
+                            Data.ItemsSource = profileData;
+                            break;
+                        case "Канал 1":
+                            ChannelsColumns();
 
-                                var channel1Data = ChannelsRepository.GetDataOfChannel1(
-                                    AreaRepository.GetAreaIDByProjectID(
-                                        ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context),
-                                        context),
-                                    context);
+                            var channel1Data = ChannelsRepository.GetDataOfChannel1(
+                                AreaRepository.GetAreaIDByProjectID(
+                                    ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString())));
 
-                                Data.ItemsSource = channel1Data;
-                                break;
-                            case "Канал 2":
+                            Data.ItemsSource = channel1Data;
+                            break;
+                        case "Канал 2":
 
-                                var channel2Data = ChannelsRepository.GetDataOfChannel2(
-                                    AreaRepository.GetAreaIDByProjectID(
-                                        ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context),
-                                        context),
-                                    context);
+                            var channel2Data = ChannelsRepository.GetDataOfChannel2(
+                                AreaRepository.GetAreaIDByProjectID(
+                                    ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString())));
 
-                                Data.ItemsSource = channel2Data;
-                                ChannelsColumns();
-                                break;
-                            case "Канал 3":
+                            Data.ItemsSource = channel2Data;
+                            ChannelsColumns();
+                            break;
+                        case "Канал 3":
 
-                                var channel3Data = ChannelsRepository.GetDataOfChannel3(
-                                    AreaRepository.GetAreaIDByProjectID(
-                                        ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context),
-                                        context),
-                                    context);
+                            var channel3Data = ChannelsRepository.GetDataOfChannel3(
+                                AreaRepository.GetAreaIDByProjectID(
+                                    ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString())));
 
-                                Data.ItemsSource = channel3Data;
-                                ChannelsColumns();
-                                break;
-                            case "Полет":
-                                FlightColumns();
+                            Data.ItemsSource = channel3Data;
+                            ChannelsColumns();
+                            break;
+                        case "Полет":
+                            FlightColumns();
 
-                                var flightData = FlightRepository.GetDataOfFlight(
-                                    ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context),
-                                    context);
+                            var flightData = FlightRepository.GetDataOfFlight(
+                                ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString()));
 
-                                Data.ItemsSource = flightData;
-                                break;
-                            case "Спектрометр":
-                                SpectrometerColumns();
+                            Data.ItemsSource = flightData;
+                            break;
+                        case "Спектрометр":
+                            SpectrometerColumns();
 
-                                var specData = SpectrometerRepository.GetDataOfSpectrometer(
-                                    FlightRepository.GetFlightIDByProjectID(
-                                        ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context),
-                                        context),
-                                    context);
+                            var specData = SpectrometerRepository.GetDataOfSpectrometer(
+                                FlightRepository.GetFlightIDByProjectID(
+                                    ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString())));
 
-                                Data.ItemsSource = specData;
-                                break;
-                            case "Метаданные":
-                                MetadataColumns();
+                            Data.ItemsSource = specData;
+                            break;
+                        case "Метаданные":
+                            MetadataColumns();
 
-                                var metaData = MetadataRepository.GetDataOfMetadata(
-                                    SpectrometerRepository.GetSpectrometerIDByFlightID(
-                                    FlightRepository.GetFlightIDByProjectID(
-                                        ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString(), context),
-                                        context),
-                                    context), 
-                                    context);
+                            var metaData = MetadataRepository.GetDataOfMetadata(
+                                SpectrometerRepository.GetSpectrometerIDByFlightID(
+                                FlightRepository.GetFlightIDByProjectID(
+                                    ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString()))));
 
-                                Data.ItemsSource = metaData;
-                                break;
-                        }
+                            Data.ItemsSource = metaData;
+                            break;
                     }
                 }
             }

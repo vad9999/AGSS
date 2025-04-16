@@ -92,6 +92,7 @@ public partial class GravitySurveyOnDeleteNoAction : DbContext
 
             entity.HasOne(d => d.Area).WithMany(p => p.AreaCoordinates)
                 .HasForeignKey(d => d.AreaId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__AreaCoord__AreaI__68487DD7");
         });
 
@@ -106,6 +107,7 @@ public partial class GravitySurveyOnDeleteNoAction : DbContext
 
             entity.HasOne(d => d.ProfileCoordinates).WithMany(p => p.Channel1s)
                 .HasForeignKey(d => d.ProfileCoordinatesId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__Channel1__Profil__05D8E0BE");
         });
 
@@ -120,6 +122,7 @@ public partial class GravitySurveyOnDeleteNoAction : DbContext
 
             entity.HasOne(d => d.ProfileCoordinates).WithMany(p => p.Channel2s)
                 .HasForeignKey(d => d.ProfileCoordinatesId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__Channel2__Profil__08B54D69");
         });
 
@@ -134,6 +137,7 @@ public partial class GravitySurveyOnDeleteNoAction : DbContext
 
             entity.HasOne(d => d.ProfileCoordinates).WithMany(p => p.Channel3s)
                 .HasForeignKey(d => d.ProfileCoordinatesId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__Channel3__Profil__0B91BA14");
         });
 
@@ -181,10 +185,12 @@ public partial class GravitySurveyOnDeleteNoAction : DbContext
 
             entity.HasOne(d => d.Operator).WithMany(p => p.Flights)
                 .HasForeignKey(d => d.OperatorId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__Flight__Operator__59FA5E80");
 
             entity.HasOne(d => d.Project).WithMany(p => p.Flights)
                 .HasForeignKey(d => d.ProjectId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__Flight__ProjectI__59063A47");
         });
 
@@ -240,6 +246,7 @@ public partial class GravitySurveyOnDeleteNoAction : DbContext
 
             entity.HasOne(d => d.Area).WithMany(p => p.Profiles)
                 .HasForeignKey(d => d.AreaId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__Profile__AreaID__5FB337D6");
         });
 
@@ -252,6 +259,7 @@ public partial class GravitySurveyOnDeleteNoAction : DbContext
 
             entity.HasOne(d => d.Profile).WithMany(p => p.ProfileCoordinates)
                 .HasForeignKey(d => d.ProfileId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__ProfileCo__Profi__02FC7413");
         });
 
@@ -270,18 +278,22 @@ public partial class GravitySurveyOnDeleteNoAction : DbContext
 
             entity.HasOne(d => d.Analyst).WithMany(p => p.Projects)
                 .HasForeignKey(d => d.AnalystId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__Project__Analyst__5441852A");
 
             entity.HasOne(d => d.ChiefEnginner).WithMany(p => p.Projects)
                 .HasForeignKey(d => d.ChiefEnginnerId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__Project__ChiefEn__52593CB8");
 
             entity.HasOne(d => d.Customer).WithMany(p => p.Projects)
                 .HasForeignKey(d => d.CustomerId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__Project__Custome__5165187F");
 
             entity.HasOne(d => d.LeadSpecialist).WithMany(p => p.Projects)
                 .HasForeignKey(d => d.LeadSpecialistId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__Project__LeadSpe__534D60F1");
         });
 
@@ -296,11 +308,13 @@ public partial class GravitySurveyOnDeleteNoAction : DbContext
 
             entity.HasOne(d => d.Flight).WithMany(p => p.Spectrometers)
                 .HasForeignKey(d => d.FlightId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__Spectrome__Fligh__628FA481");
         });
 
         OnModelCreatingPartial(modelBuilder);
     }
+
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

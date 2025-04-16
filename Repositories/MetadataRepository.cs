@@ -10,9 +10,30 @@ namespace AGSS.Repositories
 {
     public static class MetadataRepository
     {
-        public static List<object> GetDataOfMetadata(int SpecID, GravitySurveyOnDeleteNoAction context)
+        public static List<Metadata> GetDataOfMetadata(int SpecID)
         {
-            return context.Metadata.Where(m => m.SpectrometerId == SpecID).Select(m => new {m.EquipmentDescription, m.Notes}).ToList().Cast<object>().ToList();
+            using(var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Metadata.Where(m => m.SpectrometerId == SpecID).ToList();
+            }
+        }
+
+        public static void SaveChanges(Metadata pr)
+        {
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                context.Metadata.Update(pr);
+                context.SaveChanges();
+            }
+        }
+
+        public static void Add(Metadata pr)
+        {
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                context.Metadata.Add(pr);
+                context.SaveChanges();
+            }
         }
     }
 }

@@ -9,13 +9,45 @@ namespace AGSS.Repositories
 {
     public static class SpectrometerRepository
     {
-        public static List<object> GetDataOfSpectrometer(int FlightID, GravitySurveyOnDeleteNoAction context)
+        public static List<Spectrometer> GetDataOfSpectrometer(int FlightID)
         {
-            return context.Spectrometers.Where(s => s.FlightId == FlightID).Select(s => new {s.MeasurementTime, s.PulseCount, s.TotalCount, s.EnergyWindowsCount}).ToList().Cast<object>().ToList();
+            using(var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Spectrometers.Where(s => s.FlightId == FlightID).ToList();
+            }
         }
-        public static int GetSpectrometerIDByFlightID(int FlightID, GravitySurveyOnDeleteNoAction context)
+        public static int GetSpectrometerIDByFlightID(int FlightID)
         {
-            return context.Spectrometers.Where(s => s.FlightId == FlightID).Select(s => s.SpectrometerId).FirstOrDefault();
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Spectrometers.Where(s => s.FlightId == FlightID).Select(s => s.SpectrometerId).FirstOrDefault();
+            }
+        }
+
+        public static void SaveChanges(Spectrometer pr)
+        {
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                context.Spectrometers.Update(pr);
+                context.SaveChanges();
+            }
+        }
+
+        public static void Add(Spectrometer pr)
+        {
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                context.Spectrometers.Add(pr);
+                context.SaveChanges();
+            }
+        }
+
+        public static bool CheckSpectrometerId(int spectrometer)
+        {
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Spectrometers.Any(s => s.SpectrometerId == spectrometer);
+            }
         }
     }
 }

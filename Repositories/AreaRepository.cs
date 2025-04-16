@@ -9,22 +9,96 @@ namespace AGSS.Repositories
 {
     public static class AreaRepository
     {
-        public static List<Area> GetDataOfArea(int ProjectID, GravitySurveyOnDeleteNoAction context)
+        public static List<Area> GetDataOfArea(int ProjectID)
         {
-            return context.Areas.Where(a => a.ProjectId == ProjectID)
-                .ToList()
-                .Cast<Area>()
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Areas.Where(a => a.ProjectId == ProjectID)
                 .ToList();
+            }
         }
 
-        public static int GetAreaIDByProjectID(int ProjectID, GravitySurveyOnDeleteNoAction context)
+        public static void AreaBreakCount(int project)
         {
-            return context.Areas.Where(a => a.ProjectId == ProjectID).Select(a => a.AreaId).FirstOrDefault();
+            using(var context = new GravitySurveyOnDeleteNoAction())
+            {
+                Area area = context.Areas.FirstOrDefault(a => a.ProjectId == project);
+                area.BreaksCount++;
+                context.Areas.Update(area);
+                context.SaveChanges();
+            }
         }
 
-        public static List<AreaCoordinate> GetAreaCoordinates(int area, GravitySurveyOnDeleteNoAction context)
+        public static void AreaBreakCountMinus(int project)
         {
-            return context.AreaCoordinates.Where(a => a.AreaId == area).ToList().Cast<AreaCoordinate>().ToList();
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                Area area = context.Areas.FirstOrDefault(a => a.ProjectId == project);
+                area.BreaksCount++;
+                context.Areas.Update(area);
+                context.SaveChanges();
+            }
+        }
+
+        public static void AreaProfileCount(int project)
+        {
+            using(var context = new GravitySurveyOnDeleteNoAction())
+            {
+                Area area = context.Areas.FirstOrDefault(a => a.ProjectId == project);
+                area.ProfileCount++;
+                context.Areas.Update(area);
+                context.SaveChanges();
+            }
+        }
+
+        public static void AreaProfileCountMinus(int project)
+        {
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                Area area = context.Areas.FirstOrDefault(a => a.ProjectId == project);
+                area.ProfileCount--;
+                context.Areas.Update(area);
+                context.SaveChanges();
+            }
+        }
+
+        public static int GetAreaIDByProjectID(int ProjectID)
+        {
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Areas
+                              .Where(a => a.ProjectId == ProjectID)
+                              .Select(a => a.AreaId)
+                              .FirstOrDefault();
+            }
+        }
+
+        public static List<AreaCoordinate> GetAreaCoordinates(int area)
+        {
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.AreaCoordinates
+                              .Where(a => a.AreaId == area)
+                              .ToList();
+            }
+        }
+
+        public static void Add(Area area)
+        {
+            using(var context = new GravitySurveyOnDeleteNoAction())
+            {
+                context.Areas.Add(area);
+                context.SaveChanges();
+            }
+        }
+
+        public static void AddCoordinate(AreaCoordinate area)
+        {
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                context.AreaCoordinates.Add(area);
+                context.SaveChanges();
+            }
         }
 
         public static void SaveChanges(Area pr)

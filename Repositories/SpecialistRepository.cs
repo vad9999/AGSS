@@ -9,9 +9,12 @@ namespace AGSS.Repositories
 {
     public static class SpecialistRepository
     {
-        public static List<LeadSpecialist> GetDataOfSpecialist(int SpecialistID, GravitySurveyOnDeleteNoAction context)
+        public static List<LeadSpecialist> GetDataOfSpecialist(int SpecialistID)
         {
-            return context.LeadSpecialists.Where(l => l.LeadSpecialistId == SpecialistID).ToList().Cast<LeadSpecialist>().ToList();
+            using(var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.LeadSpecialists.Where(l => l.LeadSpecialistId == SpecialistID).ToList();
+            }
         }
 
         public static void SaveChanges(LeadSpecialist pr)

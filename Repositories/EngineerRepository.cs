@@ -9,9 +9,12 @@ namespace AGSS.Repositories
 {
     public static class EngineerRepository
     {
-        public static List<ChiefEnginner> GetDataOfEngineer(int ID, GravitySurveyOnDeleteNoAction context)
+        public static List<ChiefEnginner> GetDataOfEngineer(int ID)
         {
-            return context.ChiefEnginners.Where(e => e.ChiefEnginnerId == ID).ToList().Cast<ChiefEnginner>().ToList();
+            using(var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.ChiefEnginners.Where(e => e.ChiefEnginnerId == ID).ToList().Cast<ChiefEnginner>().ToList();
+            }
         }
 
         public static void SaveChanges(ChiefEnginner pr)

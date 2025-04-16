@@ -9,18 +9,63 @@ namespace AGSS.Repositories
 {
     public static class FlightRepository
     {
-        public static List<object> GetDataOfFlight(int ProjectID, GravitySurveyOnDeleteNoAction context)
+        public static List<Flight> GetDataOfFlight(int ProjectID)
         {
-            return context.Flights.Where(f => f.ProjectId == ProjectID).Select(p => new {p.StartDateTime, p.EndDateTime, p.AltitudeAboveGround, p.AltitudeAboveSea, p.Speed}).ToList().Cast<object>().ToList();
-        }
-        public static int GetFlightIDByProjectID(int ProjectID, GravitySurveyOnDeleteNoAction context)
-        {
-            return context.Flights.Where(f => f.ProjectId == ProjectID).Select(f => f.FlightId).FirstOrDefault();
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Flights
+                    .Where(f => f.ProjectId == ProjectID)
+                    .ToList();
+            }
         }
 
-        public static int? GetOperatorIDByFlightID(int flight, GravitySurveyOnDeleteNoAction context)
+        public static int GetFlightIDByProjectID(int ProjectID)
         {
-            return context.Flights.Where(f => f.FlightId == flight).Select(f => f.OperatorId).FirstOrDefault();
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Flights
+                    .Where(f => f.ProjectId == ProjectID)
+                    .Select(f => f.FlightId)
+                    .FirstOrDefault();
+            }
+        }
+
+        public static int? GetOperatorIDByFlightID(int flight)
+        {
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Flights
+                    .Where(f => f.FlightId == flight)
+                    .Select(f => f.OperatorId)
+                    .FirstOrDefault();
+            }
+        }
+
+
+        public static void SaveChanges(Flight pr)
+        {
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                context.Flights.Update(pr);
+                context.SaveChanges();
+            }
+        }
+
+        public static void Add(Flight f)
+        {
+            using(var context = new GravitySurveyOnDeleteNoAction())
+            {
+                context.Flights.Add(f);
+                context.SaveChanges();
+            }
+        }
+
+        public static bool CheckFlightId(int flight)
+        {
+            using(var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Flights.Any(f => f.FlightId == flight);
+            }
         }
     }
 }

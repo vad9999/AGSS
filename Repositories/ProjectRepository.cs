@@ -10,40 +10,81 @@ namespace AGSS.Repositories
 {
     public static class ProjectRepository
     {
-        public static List<string> GetProjectNames(int ID, GravitySurveyOnDeleteNoAction context)
+        public static List<string> GetProjectNames(int ID)
         {
-            return context.Projects.Where(p => p.CustomerId == ID).Select(p => p.ProjectName).ToList();
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Projects
+                    .Where(p => p.CustomerId == ID)
+                    .Select(p => p.ProjectName)
+                    .ToList();
+            }
         }
 
-        public static List<string> GetProjectNamesAdmin(GravitySurveyOnDeleteNoAction context)
+        public static List<string> GetProjectNamesAdmin()
         {
-            return context.Projects.Select(p => p.ProjectName).ToList();
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Projects
+                    .Select(p => p.ProjectName)
+                    .ToList();
+            }
         }
 
-        public static int GetIDByProjectName(string name, GravitySurveyOnDeleteNoAction context)
+        public static int GetIDByProjectName(string name)
         {
-            return context.Projects.Where(p => p.ProjectName == name).Select(p => p.ProjectId).FirstOrDefault();
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Projects
+                    .Where(p => p.ProjectName == name)
+                    .Select(p => p.ProjectId)
+                    .FirstOrDefault();
+            }
         }
 
-        public static List<Project> GetDataOfProject(int ProjectID, GravitySurveyOnDeleteNoAction context)
+        public static List<Project> GetDataOfProject(int ProjectID)
         {
-            return context.Projects.Where(p => p.ProjectId == ProjectID).ToList().Cast<Project>().ToList();
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Projects
+                    .Where(p => p.ProjectId == ProjectID)
+                    .ToList();
+            }
         }
 
-        public static int? GetSpecialistIDByProjectID(int ProjectID, GravitySurveyOnDeleteNoAction context)
+        public static int? GetSpecialistIDByProjectID(int ProjectID)
         {
-            return context.Projects.Where(p => p.ProjectId == ProjectID).Select(p => p.LeadSpecialistId).FirstOrDefault();
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Projects
+                    .Where(p => p.ProjectId == ProjectID)
+                    .Select(p => p.LeadSpecialistId)
+                    .FirstOrDefault();
+            }
         }
 
-        public static int? GetEngineerIDByProjectID(int ProjectID, GravitySurveyOnDeleteNoAction context)
+        public static int? GetEngineerIDByProjectID(int ProjectID)
         {
-            return context.Projects.Where(p => p.ProjectId == ProjectID).Select(p => p.ChiefEnginnerId).FirstOrDefault();
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Projects
+                    .Where(p => p.ProjectId == ProjectID)
+                    .Select(p => p.ChiefEnginnerId)
+                    .FirstOrDefault();
+            }
         }
 
-        public static int? GetAnalystIDByProjectID(int ProjectID, GravitySurveyOnDeleteNoAction context)
+        public static int? GetAnalystIDByProjectID(int ProjectID)
         {
-            return context.Projects.Where(p => p.ProjectId == ProjectID).Select(p => p.AnalystId).FirstOrDefault();
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Projects
+                    .Where(p => p.ProjectId == ProjectID)
+                    .Select(p => p.AnalystId)
+                    .FirstOrDefault();
+            }
         }
+
 
         public static void SaveChanges(Project pr)
         {

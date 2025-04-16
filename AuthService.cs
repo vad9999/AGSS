@@ -10,29 +10,45 @@ namespace AGSS
 {
     public static class AuthService
     {
-        public static bool AuthenticateCustomer(string username, string password, GravitySurveyOnDeleteNoAction context)
+        public static bool AuthenticateCustomer(string username, string password)
         {
-            return context.Customers.Any(c => c.Login == username && c.Password == password);
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Customers.Any(c => c.Login == username && c.Password == password);
+            }
         }
 
-        public static bool AuthenticateEnginner(string username, string password, GravitySurveyOnDeleteNoAction context)
+        public static bool AuthenticateEnginner(string username, string password)
         {
-            return context.ChiefEnginners.Any(c => c.Login == username && c.Password == password);
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.ChiefEnginners.Any(c => c.Login == username && c.Password == password);
+            }
         }
 
-        public static bool AuthenticateAnalyst(string username, string password, GravitySurveyOnDeleteNoAction context)
+        public static bool AuthenticateAnalyst(string username, string password)
         {
-            return context.Analysts.Any(c => c.Login == username && c.Password == password);
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Analysts.Any(c => c.Login == username && c.Password == password);
+            }
         }
 
-        public static bool AuthenticateOperator(string username, string password, GravitySurveyOnDeleteNoAction context)
+        public static bool AuthenticateOperator(string username, string password)
         {
-            return context.Operators.Any(c => c.Login == username && c.Password == password);
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Operators.Any(c => c.Login == username && c.Password == password);
+            }
         }
 
-        public static bool AuthenticateSpecialist(string username, string password, GravitySurveyOnDeleteNoAction context)
+        public static bool AuthenticateSpecialist(string username, string password)
         {
-            return context.LeadSpecialists.Any(c => c.Login == username && c.Password == password);
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.LeadSpecialists.Any(c => c.Login == username && c.Password == password);
+            }
         }
+
     }
 }

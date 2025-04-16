@@ -34,61 +34,58 @@ namespace AGSS
                 {
                     string login = LoginBox.Text.Trim();
                     string password = PasBox.Password.Trim();
-                    using(GravitySurveyOnDeleteNoAction context = new GravitySurveyOnDeleteNoAction())
+                    switch (LoginCombo.SelectedItem)
                     {
-                        switch (LoginCombo.SelectedItem)
-                        {
-                            case "Заказчик":
-                                if (AuthService.AuthenticateCustomer(login, password, context))
-                                {
-                                    CustomerWindow customer = new CustomerWindow(CustomerRepository.GetCustomerID(login, password, context));
-                                    customer.Show();
-                                    this.Close();
-                                }
-                                else
-                                    MessageBox.Show("Неверный логин или пароль");
-                                break;
-                            case "Главный инженер":
-                                if (AuthService.AuthenticateEnginner(login, password, context))
-                                {
-                                    ChiefEngineerWindow engenner = new ChiefEngineerWindow();
-                                    engenner.Show();
-                                    this.Close();
-                                }
-                                else
-                                    MessageBox.Show("Неверный логин или пароль");
-                                break;
-                            case "Ведущий специалист":
-                                if (AuthService.AuthenticateSpecialist(login, password, context))
-                                {
-                                    LeadSpecialistWindow specialist = new LeadSpecialistWindow();
-                                    specialist.Show();
-                                    this.Close();
-                                }
-                                else
-                                    MessageBox.Show("Неверный логин или пароль");
-                                break;
-                            case "Оператор":
-                                if (AuthService.AuthenticateOperator(login, password, context))
-                                {
-                                    OperatorWindow window = new OperatorWindow();
-                                    window.Show();
-                                    this.Close();
-                                }
-                                else
-                                    MessageBox.Show("Неверный логин или пароль");
-                                break;
-                            case "Аналитик":
-                                if (AuthService.AuthenticateAnalyst(login, password, context))
-                                {
-                                    AnalystWindow window = new AnalystWindow();
-                                    window.Show();
-                                    this.Close();
-                                }
-                                else
-                                    MessageBox.Show("Неверный логин или пароль");
-                                break;
-                        }
+                        case "Заказчик":
+                            if (AuthService.AuthenticateCustomer(login, password))
+                            {
+                                CustomerWindow customer = new CustomerWindow(CustomerRepository.GetCustomerID(login, password));
+                                customer.Show();
+                                this.Close();
+                            }
+                            else
+                                MessageBox.Show("Неверный логин или пароль");
+                            break;
+                        case "Главный инженер":
+                            if (AuthService.AuthenticateEnginner(login, password))
+                            {
+                                ChiefEngineerWindow engenner = new ChiefEngineerWindow();
+                                engenner.Show();
+                                this.Close();
+                            }
+                            else
+                                MessageBox.Show("Неверный логин или пароль");
+                            break;
+                        case "Ведущий специалист":
+                            if (AuthService.AuthenticateSpecialist(login, password))
+                            {
+                                LeadSpecialistWindow specialist = new LeadSpecialistWindow();
+                                specialist.Show();
+                                this.Close();
+                            }
+                            else
+                                MessageBox.Show("Неверный логин или пароль");
+                            break;
+                        case "Оператор":
+                            if (AuthService.AuthenticateOperator(login, password))
+                            {
+                                OperatorWindow window = new OperatorWindow();
+                                window.Show();
+                                this.Close();
+                            }
+                            else
+                                MessageBox.Show("Неверный логин или пароль");
+                            break;
+                        case "Аналитик":
+                            if (AuthService.AuthenticateAnalyst(login, password))
+                            {
+                                AnalystWindow window = new AnalystWindow();
+                                window.Show();
+                                this.Close();
+                            }
+                            else
+                                MessageBox.Show("Неверный логин или пароль");
+                            break;
                     }
                 }
                 else
