@@ -23,5 +23,10 @@ namespace AGSS
         {
             InitializeComponent();
         }
+
+        private void AddBTN_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -20,6 +20,8 @@ using AGSS.Entities;
 using AGSS.Repositories;
 using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
+using OxyPlot;
+using OxyPlot.Series;
 
 namespace AGSS
 {
@@ -43,16 +45,19 @@ namespace AGSS
         private ObservableCollection<Spectrometer> spectrometerData = new ObservableCollection<Spectrometer>();
         private ObservableCollection<Metadata> metadataData = new ObservableCollection<Metadata>();
 
+        private List<DataPoint> dataPoints = new List<DataPoint>();
+
         public ChiefEngineerWindow()
         {
             InitializeComponent();
             LoadProjects();
-            AddCombo.ItemsSource = new List<string> { "Площадь", "Координаты площади", "Профиль", "Координаты профиля", "Канал 1", "Канал 2", "Канал 3", "Полет", "Спектрометер", "Метаданые" };
+            AddCombo.ItemsSource = new List<string> {"Проект", "Площадь", "Координаты площади", "Профиль", "Координаты профиля", "Канал 1", "Канал 2", "Канал 3", "Полет", "Спектрометер", "Метаданые" };
         }
 
         private void LoadProjects()
         {
             var names = ProjectRepository.GetProjectNamesAdmin();
+            names.Add("Добавить проект");
             if (names != null)
             {
                 ProjectCombo.ItemsSource = names;
@@ -63,7 +68,7 @@ namespace AGSS
 
         private void ProjectCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ProjectCombo.SelectedItem != null)
+            if (ProjectCombo.SelectedItem != null && ProjectCombo.SelectedItem.ToString() != "Добавить проект")
             {
                 var Projects = new ObservableCollection<Project>(ProjectRepository.GetDataOfProject(ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString())));
                 ProjectView.ItemsSource = Projects;
@@ -111,13 +116,18 @@ namespace AGSS
                     }
                 }
             }
+
+            if(ProjectCombo.SelectedItem.ToString() == "Добавить проект")
+            {
+                
+            }
         }
 
         private void DataTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if (DataTree.SelectedItem is TreeViewItem selectedItem)
             {
-                if (ProjectCombo.SelectedItem != null)
+                if (ProjectCombo.SelectedItem != null && ProjectCombo.SelectedItem.ToString() != "Добавить проект")
                 {
                     switch (selectedItem.Header.ToString())
                     {
@@ -144,6 +154,25 @@ namespace AGSS
                             foreach (var pr in areaCoordinates)
                             {
                                 pr.PropertyChanged += (s, e) => AreaRepository.SaveChangesCoord((AreaCoordinate)s);
+                            }
+
+                            if(areaCoordinates.Count > 0)
+                            {
+                                foreach (var c in areaCoordinates)
+                                {
+                                    dataPoints.Add(new DataPoint((double)c.X, (double)c.Y));
+                                }
+
+                                var plotModel = new PlotModel { Title = "График координат площади" };
+                                var series = new LineSeries { Title = "Линия", MarkerType = MarkerType.Circle };
+
+                                foreach (var point in dataPoints)
+                                {
+                                    series.Points.Add(point);
+                                }
+
+                                plotModel.Series.Add(series);
+                                plotView.Model = plotModel;
                             }
                             break;
                         case "Профиль":
@@ -369,7 +398,8 @@ namespace AGSS
             {
                 Columns =
                 {
-                    new GridViewColumn { Header = "Значение", CellTemplate = CreateTextBoxTemplate("MeasurementResult")}
+                    new GridViewColumn { Header = "Значение", CellTemplate = CreateTextBoxTemplate("MeasurementResult")},
+                    new GridViewColumn {Header = "№ координат профиля", CellTemplate = CreateTextBoxTemplate("ProfileCoordinatesId")}
                 }
             };
         }
@@ -411,6 +441,7 @@ namespace AGSS
             {
                 Columns =
                 {
+                    new GridViewColumn { Header = "№ спектрометра", DisplayMemberBinding = new Binding("SpectrometerId")},
                     new GridViewColumn { Header = "Описание оборудования", CellTemplate = CreateTextBoxTemplate("EquipmentDescription") },
                     new GridViewColumn { Header = "Примечания", CellTemplate = CreateTextBoxTemplate("Notes") }
                 }
@@ -584,7 +615,7 @@ namespace AGSS
 
         private void AddBTN_Click(object sender, RoutedEventArgs e)
         {
-            if (ProjectCombo.SelectedItem != null)
+            if (ProjectCombo.SelectedItem != null && ProjectCombo.SelectedItem.ToString() != "Добавить проект")
             {
                 if (AddCombo.SelectedItem != null)
                 {
@@ -830,7 +861,7 @@ namespace AGSS
 
         private void AddCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ProjectCombo.SelectedItem != null)
+            if (ProjectCombo.SelectedItem != null && ProjectCombo.SelectedItem.ToString() != "Добавить проект")
             {
                 if (AddCombo.SelectedItem != null)
                 {

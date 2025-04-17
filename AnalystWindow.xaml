@@ -11,7 +11,7 @@
         <ComboBox x:Name="ProjectCombo" HorizontalAlignment="Left" VerticalAlignment="Top" Width="194"/>
         <Button x:Name="CreateReportBTN" Content="Создать отчет" HorizontalAlignment="Left" Margin="-374,51,0,0" VerticalAlignment="Top" Height="32" Width="122" Click="CreateReportBTN_Click"/>
         <Button x:Name="SortBTN" Content="Сортировать данные" HorizontalAlignment="Left" Margin="-187,72,0,0" VerticalAlignment="Top" Height="32" Width="152" Click="SortBTN_Click"/>
-        <DataGrid x:Name="Data" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="440,27,63,27"/>
+        <DataGrid x:Name="Data" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="958,-2,-455,56"/>
         <TreeView x:Name="DataTree" Margin="0,22,709,0" Background="LightGray" Height="574" VerticalAlignment="Top" FontSize="18">
             <TreeViewItem Header="Площадь">
                 <TreeViewItem Header="Профиль">
@@ -26,7 +26,7 @@
                 </TreeViewItem>
             </TreeViewItem>
         </TreeView>
-        <oxy:PlotView x:Name="plotView" Margin="-604,169,1004,43"/>
+        <oxy:PlotView x:Name="plotView" Margin="200,185,200,27"/>
 
     </Grid>
 </Window>
