@@ -16,5 +16,13 @@ namespace AGSS
                 return context.Customers.FirstOrDefault(c => c.Login == login && c.Password == password).CustomerId;
             }
         }
+
+        public static List<Customer> GetCustomers()
+        {
+            using(var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Customers.ToList();
+            }
+        }
     }
 }

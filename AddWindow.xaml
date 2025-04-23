@@ -5,31 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGSS"
         mc:Ignorable="d"
-        Title="AddWindow" Height="265" Width="430">
+        Title="AddWindow" Height="214" Width="539">
     <Grid>
-        <TextBox x:Name="CustomerNameBox" HorizontalAlignment="Left" Margin="114,31,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="101"/>
-        <TextBox x:Name="PersonBox" HorizontalAlignment="Left" Margin="114,54,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="101"/>
-        <Label Content="Заказчик" HorizontalAlignment="Left" VerticalAlignment="Top" Width="215" HorizontalContentAlignment="Center"/>
-        <Label Content="Проект" HorizontalAlignment="Left" Margin="215,0,0,0" VerticalAlignment="Top" Width="215" HorizontalContentAlignment="Center"/>
-        <TextBox x:Name="AddressBox" HorizontalAlignment="Left" Margin="114,77,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="101"/>
-        <TextBox x:Name="PhoneBox" HorizontalAlignment="Left" Margin="114,100,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="101"/>
-        <TextBox x:Name="EmailBox" HorizontalAlignment="Left" Margin="114,123,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="101"/>
-        <TextBox x:Name="LoginBox" HorizontalAlignment="Left" Margin="114,146,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="101"/>
-        <TextBox x:Name="PasswordBox" HorizontalAlignment="Left" Margin="114,169,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="101"/>
-        <Label Content="Наименование" HorizontalAlignment="Left" Margin="10,27,0,0" VerticalAlignment="Top"/>
-        <Label Content="Контактная персона" HorizontalAlignment="Left" Margin="10,49,0,0" VerticalAlignment="Top"/>
-        <Label Content="Адрес" HorizontalAlignment="Left" Margin="13,73,0,0" VerticalAlignment="Top"/>
-        <Label Content="Телефон" HorizontalAlignment="Left" Margin="13,96,0,0" VerticalAlignment="Top"/>
-        <Label Content="Эл. почта" HorizontalAlignment="Left" Margin="13,119,0,0" VerticalAlignment="Top"/>
-        <Label Content="Логин" HorizontalAlignment="Left" Margin="13,142,0,0" VerticalAlignment="Top"/>
-        <Label Content="Пароль" HorizontalAlignment="Left" Margin="13,165,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="AddBTN" Content="Создать" HorizontalAlignment="Left" Margin="335,186,0,0" VerticalAlignment="Top" Height="33" Width="85" Click="AddBTN_Click"/>
-        <TextBox x:Name="ProjectNameBox" HorizontalAlignment="Left" Margin="319,31,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="101"/>
-        <TextBox x:Name="NotesBox" HorizontalAlignment="Left" Margin="319,54,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="101"/>
-        <Label Content="Название" HorizontalAlignment="Left" Margin="220,27,0,0" VerticalAlignment="Top"/>
-        <Label Content="Записи" HorizontalAlignment="Left" Margin="220,50,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="SpecialistCombo" HorizontalAlignment="Left" Margin="319,77,0,0" VerticalAlignment="Top" Width="101"/>
-        <Label Content="Ведущий специалист" HorizontalAlignment="Left" Margin="220,73,0,0" VerticalAlignment="Top" Width="127"/>
+        <Label Content="Проект" HorizontalAlignment="Left" Margin="270,0,0,0" VerticalAlignment="Top" Width="269" HorizontalContentAlignment="Center"/>
+        <Button x:Name="AddBTN" Content="Создать" HorizontalAlignment="Left" Margin="396,125,0,0" VerticalAlignment="Top" Height="33" Width="110" Click="AddBTN_Click"/>
+        <TextBox x:Name="ProjectNameBox" HorizontalAlignment="Left" Margin="404,37,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="101"/>
+        <TextBox x:Name="NotesBox" HorizontalAlignment="Left" Margin="404,60,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="101"/>
+        <Label Content="Название" HorizontalAlignment="Left" Margin="270,31,0,0" VerticalAlignment="Top"/>
+        <Label Content="Записи" HorizontalAlignment="Left" Margin="270,54,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="SpecialistCombo" HorizontalAlignment="Left" Margin="404,81,0,0" VerticalAlignment="Top" Width="102"/>
+        <Label Content="Ведущий специалист" HorizontalAlignment="Left" Margin="270,77,0,0" VerticalAlignment="Top" Width="126"/>
+        <ComboBox x:Name="CustomerCombo" HorizontalAlignment="Left" Margin="75,35,0,0" VerticalAlignment="Top" Width="190"/>
+        <Button x:Name="AddCustomerBTN" Content="Добавить заказчика" HorizontalAlignment="Left" Margin="139,67,0,0" VerticalAlignment="Top" Width="126" Height="34" Click="AddCustomerBTN_Click"/>
+        <Label Content="Заказчик" HorizontalAlignment="Left" VerticalAlignment="Top" Width="270" HorizontalContentAlignment="Center"/>
+        <Label Content="Заказчик" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

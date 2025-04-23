@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Animation;
 using AGSS.Entities;
 
 namespace AGSS.Repositories
@@ -23,6 +24,14 @@ namespace AGSS.Repositories
             {
                 context.LeadSpecialists.Update(pr);
                 context.SaveChanges();
+            }
+        }
+
+        public static List<LeadSpecialist> GetFreeSpecialists()
+        {
+            using(var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.LeadSpecialists.ToList();
             }
         }
     }

@@ -26,12 +26,13 @@ namespace AGSS.Repositories
             }
         }
 
-        public static int GetEnginner()
+        public static int GetEngineer()
         {
-            using(var context = new GravitySurveyOnDeleteNoAction())
+            using (var context = new GravitySurveyOnDeleteNoAction())
             {
-                return context.ChiefEnginners.LastOrDefault().ChiefEnginnerId;
+                return context.ChiefEnginners.OrderByDescending(e => e.ChiefEnginnerId).FirstOrDefault()?.ChiefEnginnerId ?? -1;
             }
         }
+
     }
 }

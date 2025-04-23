@@ -25,5 +25,13 @@ namespace AGSS.Repositories
                 context.SaveChanges();
             }
         }
+
+        public static int GetAnalyst()
+        {
+            using(var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Analysts.OrderByDescending(e => e.AnalystId).FirstOrDefault()?.AnalystId ?? -1;
+            }
+        }
     }
 }

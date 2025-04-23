@@ -34,7 +34,7 @@ namespace AGSS.Repositories
             using (var context = new GravitySurveyOnDeleteNoAction())
             {
                 Area area = context.Areas.FirstOrDefault(a => a.ProjectId == project);
-                area.BreaksCount++;
+                area.BreaksCount--;
                 context.Areas.Update(area);
                 context.SaveChanges();
             }

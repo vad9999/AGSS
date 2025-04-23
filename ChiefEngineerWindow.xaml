@@ -198,12 +198,12 @@
             </ListView.View>
         </ListView>
         <Button x:Name="DeleteBTN" Content="Удалить" HorizontalAlignment="Left" Margin="171,617,0,0" VerticalAlignment="Top" Height="45" Width="123" FontSize="16" Click="DeleteBTN_Click"/>
-        <oxy:PlotView x:Name="plotView" Margin="1015,377,0,0" VerticalAlignment="Top" Height="392" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="554">
+        <oxy:PlotView x:Name="DataPlot" Margin="1015,377,0,0" VerticalAlignment="Top" Height="392" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="554">
             <oxy:PlotView.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleX="-1" ScaleY="-1"/>
                     <SkewTransform/>
-                    <RotateTransform/>
+                    <RotateTransform Angle="-179.847"/>
                     <TranslateTransform/>
                 </TransformGroup>
             </oxy:PlotView.RenderTransform>
