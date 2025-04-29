@@ -85,13 +85,28 @@ namespace AGSS.Repositories
             }
         }
 
-
         public static void SaveChanges(Project pr)
         {
             using (var context = new GravitySurveyOnDeleteNoAction())
             {
                 context.Projects.Update(pr);
                 context.SaveChanges();
+            }
+        }
+
+        public static int GetProjectBySpecialist(LeadSpecialist specialist)
+        {
+            using(var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Projects.OrderByDescending(e => e.LeadSpecialist == specialist).FirstOrDefault()?.ProjectId ?? -1;
+            }
+        }
+
+        public static string GetProjectNameById(int ProjectID)
+        {
+            using(var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Projects.FirstOrDefault(p => p.ProjectId == ProjectID).ProjectName;
             }
         }
     }

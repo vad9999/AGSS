@@ -9,11 +9,11 @@ namespace AGSS.Repositories
 {
     public static class AnalystRepository
     {
-        public static List<Analyst> GetDataOfAnalyst(int ID)
+        public static List<Analyst> GetDataOfAnalyst()
         {
             using(var context = new GravitySurveyOnDeleteNoAction())
             {
-                return context.Analysts.Where(a => a.AnalystId == ID).ToList().Cast<Analyst>().ToList();
+                return context.Analysts.ToList();
             }
         }
 

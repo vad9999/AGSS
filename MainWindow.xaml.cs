@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using AGSS.Entities;
+using AGSS.Repositories;
 using Microsoft.Data.SqlClient;
 
 namespace AGSS
@@ -59,7 +60,7 @@ namespace AGSS
                         case "Ведущий специалист":
                             if (AuthService.AuthenticateSpecialist(login, password))
                             {
-                                LeadSpecialistWindow specialist = new LeadSpecialistWindow();
+                                LeadSpecialistWindow specialist = new LeadSpecialistWindow(SpecialistRepository.GetSpecialist(login, password));
                                 specialist.Show();
                                 this.Close();
                             }

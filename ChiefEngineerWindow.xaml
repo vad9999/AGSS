@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:AGSS"
         xmlns:oxy="http://oxyplot.org/wpf" x:Class="AGSS.ChiefEngineerWindow"
         mc:Ignorable="d"
-        Title="ChiefEngineerWindow" Height="795" Width="1603" Background="Gray">
+        Title="ChiefEngineerWindow" Height="799" Width="1593" Background="Gray">
     <Grid>
-        <TreeView x:Name="DataTree" Margin="0,22,0,0" HorizontalAlignment="Left" Width="166" SelectedItemChanged="DataTree_SelectedItemChanged" FontSize="18">
+        <TreeView x:Name="DataTree" Margin="0,31,0,0" HorizontalAlignment="Left" Width="195" SelectedItemChanged="DataTree_SelectedItemChanged" FontSize="22" Height="263" VerticalAlignment="Top">
             <TreeViewItem Header="Площадь">
                 <TreeViewItem Header="Профиль">
                     <TreeViewItem Header="Канал 1"/>
@@ -22,11 +22,11 @@
                 </TreeViewItem>
             </TreeViewItem>
         </TreeView>
-        <ComboBox x:Name="ProjectCombo" HorizontalAlignment="Left" VerticalAlignment="Top" Width="166" SelectionChanged="ProjectCombo_SelectionChanged"/>
-        <ListView x:Name="ProjectView" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="166,31,0,0" HorizontalAlignment="Left" Width="796" Height="62" VerticalAlignment="Top" >
+        <ComboBox x:Name="ProjectCombo" HorizontalAlignment="Left" VerticalAlignment="Top" Width="195" SelectionChanged="ProjectCombo_SelectionChanged" Height="31"/>
+        <ListView x:Name="ProjectView" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="194,31,0,0" HorizontalAlignment="Left" Width="796" Height="62" VerticalAlignment="Top" >
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding ProjectId}"/>
+                    <GridViewColumn Header="№" DisplayMemberBinding="{Binding ProjectId}"/>
                     <GridViewColumn Header="Название">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -72,10 +72,10 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <ListView x:Name="SpecialistView" Margin="166,124,0,0" HorizontalAlignment="Left" Width="398" Height="68" VerticalAlignment="Top">
+        <ListView x:Name="SpecialistView" Margin="194,124,0,0" HorizontalAlignment="Left" Width="398" Height="170" VerticalAlignment="Top">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding LeadSpecialistId}"/>
+                    <GridViewColumn Header="№" DisplayMemberBinding="{Binding LeadSpecialistId}"/>
                     <GridViewColumn Header="Полное имя">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -100,13 +100,13 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Label Content="Информация о проекте" HorizontalAlignment="Left" Margin="166,0,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="796" HorizontalContentAlignment="Center"/>
-        <Label Content="Информация о ведущем специалисте" HorizontalAlignment="Left" Margin="166,93,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="398" HorizontalContentAlignment="Center"/>
-        <Label Content="Информация об аналитике" HorizontalAlignment="Left" Margin="564,93,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="398" HorizontalContentAlignment="Center"/>
-        <ListView x:Name="AnalystView" Margin="564,124,0,0" Height="68" VerticalAlignment="Top" HorizontalAlignment="Left" Width="398">
+        <Label Content="Информация о проекте" HorizontalAlignment="Left" Margin="195,0,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="795" HorizontalContentAlignment="Center"/>
+        <Label Content="Информация о ведущих специалистах" HorizontalAlignment="Left" Margin="195,93,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="398" HorizontalContentAlignment="Center"/>
+        <Label Content="Информация об аналитиках" HorizontalAlignment="Left" Margin="0,294,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="504" HorizontalContentAlignment="Center"/>
+        <ListView x:Name="AnalystView" Margin="-1,325,0,0" Height="68" VerticalAlignment="Top" HorizontalAlignment="Left" Width="495">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding AnalystId}"/>
+                    <GridViewColumn Header="№" DisplayMemberBinding="{Binding AnalystId}"/>
                     <GridViewColumn Header="Полное имя">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -131,12 +131,12 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Label Content="Информация об операторе" HorizontalAlignment="Left" Margin="166,192,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="398" HorizontalContentAlignment="Center"/>
-        <Label Content="Информация об главном инженере" HorizontalAlignment="Left" Margin="564,192,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="398" HorizontalContentAlignment="Center"/>
-        <ListView x:Name="OperatorView" Margin="166,223,0,0" HorizontalAlignment="Left" Width="398" Height="71" VerticalAlignment="Top">
+        <Label Content="Информация об операторе" HorizontalAlignment="Left" Margin="591,93,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="398" HorizontalContentAlignment="Center"/>
+        <Label Content="Информация об главном инженере" HorizontalAlignment="Left" Margin="494,294,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="495" HorizontalContentAlignment="Center"/>
+        <ListView x:Name="OperatorView" Margin="591,124,0,0" HorizontalAlignment="Left" Width="398" Height="170" VerticalAlignment="Top">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding CheifEnginnerId}"/>
+                    <GridViewColumn Header="№" DisplayMemberBinding="{Binding OperatorId}"/>
                     <GridViewColumn Header="Полное имя">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -161,10 +161,10 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <ListView x:Name="EngineerView" Margin="564,223,0,0" Height="71" VerticalAlignment="Top" HorizontalAlignment="Left" Width="398">
+        <ListView x:Name="EngineerView" Margin="494,325,0,0" Height="68" VerticalAlignment="Top" HorizontalAlignment="Left" Width="495">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding OperatorId}"/>
+                    <GridViewColumn Header="№" DisplayMemberBinding="{Binding ChiefEnginnerId}"/>
                     <GridViewColumn Header="Полное имя">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -189,45 +189,46 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Label Content="Данные проекта" HorizontalAlignment="Left" Margin="166,294,0,0" VerticalAlignment="Top" Width="796" FontWeight="Bold" FontSize="16" HorizontalContentAlignment="Center"/>
-        <ListView x:Name="Data" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="166,325,0,0" Height="287" VerticalAlignment="Top" HorizontalAlignment="Left" Width="614">
+        <Label Content="Данные проекта" HorizontalAlignment="Left" Margin="0,393,0,0" VerticalAlignment="Top" Width="989" FontWeight="Bold" FontSize="16" HorizontalContentAlignment="Center"/>
+        <ListView x:Name="Data" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,424,0,0" HorizontalAlignment="Left" Width="693" Height="326" VerticalAlignment="Top">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button x:Name="DeleteBTN" Content="Удалить" HorizontalAlignment="Left" Margin="171,617,0,0" VerticalAlignment="Top" Height="45" Width="123" FontSize="16" Click="DeleteBTN_Click"/>
-        <oxy:PlotView x:Name="DataPlot" Margin="1015,377,0,0" VerticalAlignment="Top" Height="392" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="554">
+        <oxy:PlotView x:Name="DataPlot" Margin="991,377,0,0" VerticalAlignment="Top" Height="372" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="570">
             <oxy:PlotView.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleX="-1" ScaleY="-1"/>
                     <SkewTransform/>
-                    <RotateTransform Angle="-179.847"/>
+                    <RotateTransform Angle="-180.122"/>
                     <TranslateTransform/>
                 </TransformGroup>
             </oxy:PlotView.RenderTransform>
         </oxy:PlotView>
-        <ListView x:Name="CoordinateView" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="802,325,0,0" HorizontalAlignment="Left" Width="160" Height="287" VerticalAlignment="Top" Visibility="Hidden">
+        <ListView x:Name="CoordinateView" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="696,424,0,0" HorizontalAlignment="Left" Width="294" Height="326" VerticalAlignment="Top" Visibility="Hidden">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
                 </GridView>
             </ListView.View>
         </ListView>
-        <Grid Margin="1015,32,0,0" Height="345" VerticalAlignment="Top" Background="White" HorizontalAlignment="Left" Width="554">
-            <ComboBox x:Name="AddCombo" HorizontalAlignment="Left" Margin="44,10,0,0" VerticalAlignment="Top" Width="334" SelectionChanged="AddCombo_SelectionChanged"/>
-            <Label x:Name="oneLabel" Content="s" HorizontalAlignment="Right" Margin="0,51,495,0" VerticalAlignment="Top"/>
-            <Label x:Name="twoLabel" Content="s" HorizontalAlignment="Right" Margin="0,82,495,0" VerticalAlignment="Top"/>
-            <Label x:Name="threeLabel" Content="s" HorizontalAlignment="Right" Margin="0,113,495,0" VerticalAlignment="Top"/>
-            <Label x:Name="fourLabel" Content="s" HorizontalAlignment="Right" Margin="0,144,495,0" VerticalAlignment="Top"/>
-            <Label x:Name="fiveLabel" Content="s" HorizontalAlignment="Right" Margin="0,175,495,0" VerticalAlignment="Top"/>
-            <TextBox x:Name="oneBox" HorizontalAlignment="Left" Margin="200,57,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
-            <TextBox x:Name="twoBox" HorizontalAlignment="Left" Margin="200,88,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
-            <TextBox x:Name="threeBox" HorizontalAlignment="Left" Margin="200,119,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
-            <TextBox x:Name="fourBox" HorizontalAlignment="Left" Margin="200,150,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
-            <TextBox x:Name="fiveBox" HorizontalAlignment="Left" Margin="200,181,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
-            <Button x:Name="AddBTN" Content="Добавить" HorizontalAlignment="Left" Margin="421,290,0,0" VerticalAlignment="Top" Height="45" Width="123" FontSize="16" Click="AddBTN_Click"/>
+        <Grid Margin="990,31,0,0" Height="345" VerticalAlignment="Top" Background="White" HorizontalAlignment="Left" Width="570">
+            <ComboBox x:Name="AddCombo" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="201" SelectionChanged="AddCombo_SelectionChanged"/>
+            <Label x:Name="oneLabel" Content="" HorizontalAlignment="Left" Margin="10,49,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="twoLabel" Content="" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="threeLabel" Content="" HorizontalAlignment="Left" Margin="10,111,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="fourLabel" Content="" HorizontalAlignment="Left" Margin="10,142,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="fiveLabel" Content="" HorizontalAlignment="Left" Margin="10,173,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="oneBox" HorizontalAlignment="Left" Margin="200,55,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
+            <TextBox x:Name="twoBox" HorizontalAlignment="Left" Margin="200,86,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
+            <TextBox x:Name="threeBox" HorizontalAlignment="Left" Margin="200,117,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
+            <TextBox x:Name="fourBox" HorizontalAlignment="Left" Margin="200,148,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
+            <TextBox x:Name="fiveBox" HorizontalAlignment="Left" Margin="200,179,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
+            <Button x:Name="AddBTN" Content="Добавить" HorizontalAlignment="Left" Margin="410,283,0,0" VerticalAlignment="Top" Height="45" Width="123" FontSize="16" Click="AddBTN_Click"/>
+            <Button x:Name="DeleteBTN" Content="Удалить" HorizontalAlignment="Left" Margin="17,283,0,0" VerticalAlignment="Top" Height="45" Width="123" FontSize="16" Click="DeleteBTN_Click"/>
         </Grid>
+        <Label Content="Добавление и удаление данных" Margin="990,0,0,0" VerticalAlignment="Top" Height="31" HorizontalAlignment="Left" Width="570" FontSize="16" FontWeight="Bold" HorizontalContentAlignment="Center"/>
     </Grid>
 </Window>

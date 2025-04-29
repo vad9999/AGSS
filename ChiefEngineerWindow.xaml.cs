@@ -80,18 +80,16 @@ namespace AGSS
                 {
                     pr.PropertyChanged += (s, e) => ProjectRepository.SaveChanges((Project)s);
                 }
-                if(ProjectRepository.GetSpecialistIDByProjectID(ProjectId) != null)
-                {
-                    var Specialists = new ObservableCollection<LeadSpecialist>(SpecialistRepository.GetDataOfSpecialist((int)ProjectRepository.GetSpecialistIDByProjectID(ProjectId)));
-                    SpecialistView.ItemsSource = Specialists;
 
-                    foreach (var pr in Specialists)
-                    {
-                        pr.PropertyChanged += (s, e) => SpecialistRepository.SaveChanges((LeadSpecialist)s);
-                    }
+                var Specialists = new ObservableCollection<LeadSpecialist>(SpecialistRepository.GetDataOfSpecialist());
+                SpecialistView.ItemsSource = Specialists;
+
+                foreach (var pr in Specialists)
+                {
+                    pr.PropertyChanged += (s, e) => SpecialistRepository.SaveChanges((LeadSpecialist)s);
                 }
 
-                var Engineers = new ObservableCollection<ChiefEnginner>(EngineerRepository.GetDataOfEngineer((int)ProjectRepository.GetEngineerIDByProjectID(ProjectId)));
+                var Engineers = new ObservableCollection<ChiefEnginner>(EngineerRepository.GetDataOfEngineer());
                 EngineerView.ItemsSource = Engineers;
 
                 foreach (var pr in Engineers)
@@ -99,7 +97,7 @@ namespace AGSS
                     pr.PropertyChanged += (s, e) => EngineerRepository.SaveChanges((ChiefEnginner)s);
                 }
 
-                var Analysts = new ObservableCollection<Analyst>(AnalystRepository.GetDataOfAnalyst((int)ProjectRepository.GetAnalystIDByProjectID(ProjectId)));
+                var Analysts = new ObservableCollection<Analyst>(AnalystRepository.GetDataOfAnalyst());
 
                 AnalystView.ItemsSource = Analysts;
 
@@ -107,16 +105,14 @@ namespace AGSS
                 {
                     pr.PropertyChanged += (s, e) => AnalystRepository.SaveChanges((Analyst)s);
                 }
-                if(FlightRepository.GetOperatorIDByFlightID(FlightRepository.GetFlightIDByProjectID(ProjectId)) != null)
+
+                var Operators = new ObservableCollection<Operator>(OperatorRepository.GetDataOfOperator());
+
+                OperatorView.ItemsSource = Operators;
+
+                foreach (var pr in Operators)
                 {
-                    var Operators = new ObservableCollection<Operator>(OperatorRepository.GetDataOfOperator((int)FlightRepository.GetOperatorIDByFlightID(FlightRepository.GetFlightIDByProjectID(ProjectId))));
-
-                    OperatorView.ItemsSource = Operators;
-
-                    foreach (var pr in Operators)
-                    {
-                        pr.PropertyChanged += (s, e) => OperatorRepository.SaveChanges((Operator)s);
-                    }
+                    pr.PropertyChanged += (s, e) => OperatorRepository.SaveChanges((Operator)s);
                 }
             }
 
@@ -595,7 +591,7 @@ namespace AGSS
             {
                 Columns =
                 {
-                    new GridViewColumn { Header = "Номер площади", DisplayMemberBinding = new Binding ("AreaId")},
+                    new GridViewColumn { Header = "№ площади", DisplayMemberBinding = new Binding ("AreaId")},
                     new GridViewColumn { Header = "Геологическая информация", CellTemplate = CreateTextBoxTemplate("GeologicalInfo") },
                     new GridViewColumn { Header = "Площадь", CellTemplate = CreateTextBoxTemplate("Area1") },
                     new GridViewColumn { Header = "Количество изломов", CellTemplate = CreateTextBoxTemplate("BreaksCount") },
@@ -622,7 +618,7 @@ namespace AGSS
             {
                 Columns =
                 {
-                    new GridViewColumn { Header = "Номер Профиля", DisplayMemberBinding = new Binding("ProfileId") },
+                    new GridViewColumn { Header = "№ Профиля", DisplayMemberBinding = new Binding("ProfileId") },
                     new GridViewColumn { Header = "Количество изломов", CellTemplate = CreateTextBoxTemplate("BreaksCount")}
                 }
             };
@@ -634,10 +630,10 @@ namespace AGSS
             {
                 Columns =
                 {
-                    new GridViewColumn { Header = "Номер координат профиля", DisplayMemberBinding = new Binding("ProfileCoordinatesId") },
+                    new GridViewColumn { Header = "№ координат профиля", DisplayMemberBinding = new Binding("ProfileCoordinatesId") },
                     new GridViewColumn { Header = "X", CellTemplate = CreateTextBoxTemplate("X") },
                     new GridViewColumn { Header = "Y", CellTemplate = CreateTextBoxTemplate("Y") },
-                    new GridViewColumn { Header = "Номер профиля", DisplayMemberBinding = new Binding("ProfileId") }
+                    new GridViewColumn { Header = "№ профиля", DisplayMemberBinding = new Binding("ProfileId") }
                 }
             };
         }
@@ -660,12 +656,13 @@ namespace AGSS
             {
                 Columns =
                 {
-                    new GridViewColumn { Header = "Номер полёта", DisplayMemberBinding = new Binding("FlightId") },
+                    new GridViewColumn { Header = "№ полёта", DisplayMemberBinding = new Binding("FlightId") },
                     new GridViewColumn { Header = "Дата начала полета", CellTemplate = CreateTextBoxTemplate("StartDateTime") },
                     new GridViewColumn { Header = "Дата конца полета", CellTemplate = CreateTextBoxTemplate("EndDateTime") },
                     new GridViewColumn { Header = "Высота над уровнем моря", CellTemplate = CreateTextBoxTemplate("AltitudeAboveSea") },
                     new GridViewColumn { Header = "Высота над уровнем земли", CellTemplate = CreateTextBoxTemplate("AltitudeAboveGround")},
-                    new GridViewColumn { Header = "Средняя скорость", CellTemplate = CreateTextBoxTemplate("Speed")}
+                    new GridViewColumn { Header = "Средняя скорость", CellTemplate = CreateTextBoxTemplate("Speed")},
+                    new GridViewColumn { Header = "№ оператора", DisplayMemberBinding = new Binding("OperatorId") }
                 }
             };
         }
@@ -676,11 +673,12 @@ namespace AGSS
             {
                 Columns =
                 {
-                    new GridViewColumn {Header = "Номер спектрометра", DisplayMemberBinding = new Binding("SpectrometerId") },
+                    new GridViewColumn {Header = "№ спектрометра", DisplayMemberBinding = new Binding("SpectrometerId") },
                     new GridViewColumn { Header = "Время измерения", CellTemplate = CreateTextBoxTemplate("MeasurementTime") },
                     new GridViewColumn { Header = "Количество импульсов", CellTemplate = CreateTextBoxTemplate("PulseCount") },
                     new GridViewColumn { Header = "Общий счет", CellTemplate = CreateTextBoxTemplate("TotalCount") },
-                    new GridViewColumn { Header = "Количество энергетических окон", CellTemplate = CreateTextBoxTemplate("EnergyWindowsCount")}
+                    new GridViewColumn { Header = "Количество энергетических окон", CellTemplate = CreateTextBoxTemplate("EnergyWindowsCount")},
+                    new GridViewColumn {Header = "№ полета", DisplayMemberBinding = new Binding("FlightId") },
                 }
             };
         }

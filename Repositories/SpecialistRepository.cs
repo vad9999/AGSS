@@ -10,11 +10,11 @@ namespace AGSS.Repositories
 {
     public static class SpecialistRepository
     {
-        public static List<LeadSpecialist> GetDataOfSpecialist(int SpecialistID)
+        public static List<LeadSpecialist> GetDataOfSpecialist()
         {
             using(var context = new GravitySurveyOnDeleteNoAction())
             {
-                return context.LeadSpecialists.Where(l => l.LeadSpecialistId == SpecialistID).ToList();
+                return context.LeadSpecialists.ToList();
             }
         }
 
@@ -32,6 +32,14 @@ namespace AGSS.Repositories
             using(var context = new GravitySurveyOnDeleteNoAction())
             {
                 return context.LeadSpecialists.ToList();
+            }
+        }
+
+        public static LeadSpecialist GetSpecialist(string login, string password)
+        {
+            using (var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.LeadSpecialists.FirstOrDefault(c => c.Login == login && c.Password == password);
             }
         }
     }

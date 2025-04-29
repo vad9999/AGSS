@@ -9,11 +9,11 @@ namespace AGSS.Repositories
 {
     public static class OperatorRepository
     {
-        public static List<Operator> GetDataOfOperator(int ID)
+        public static List<Operator> GetDataOfOperator()
         {
             using(var context = new GravitySurveyOnDeleteNoAction())
             {
-                return context.Operators.Where(o => o.OperatorId == ID).ToList();
+                return context.Operators.ToList();
             }
 
         }
