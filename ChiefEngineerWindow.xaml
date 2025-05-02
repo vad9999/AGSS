@@ -207,7 +207,7 @@
                 </TransformGroup>
             </oxy:PlotView.RenderTransform>
         </oxy:PlotView>
-        <ListView x:Name="CoordinateView" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="696,424,0,0" HorizontalAlignment="Left" Width="294" Height="326" VerticalAlignment="Top" Visibility="Hidden">
+        <ListView x:Name="CoordinateView" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="696,424,0,0" HorizontalAlignment="Left" Width="294" Height="326" VerticalAlignment="Top">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>

@@ -52,7 +52,7 @@ namespace AGSS
         {
             InitializeComponent();
             LoadProjects();
-            AddCombo.ItemsSource = new List<string> {"Проект", "Площадь", "Координаты площади", "Профиль", "Координаты профиля", "Канал 1", "Канал 2", "Канал 3", "Полет", "Спектрометер", "Метаданые" };
+            AddCombo.ItemsSource = new List<string> {"Площадь", "Координаты площади", "Профиль", "Координаты профиля", "Канал 1", "Канал 2", "Канал 3", "Полет", "Спектрометер", "Метаданые" };
         }
 
         private void LoadProjects()

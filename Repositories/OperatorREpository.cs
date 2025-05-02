@@ -18,12 +18,29 @@ namespace AGSS.Repositories
 
         }
 
+        public static Operator GetOperator(string login, string password)
+        {
+            using(var context = new GravitySurveyOnDeleteNoAction())
+            {
+                return context.Operators.FirstOrDefault(o => o.Login == login && o.Password == password);
+            }
+        }
+
         public static void SaveChanges(Operator pr)
         {
             using (var context = new GravitySurveyOnDeleteNoAction())
             {
                 context.Operators.Update(pr);
                 context.SaveChanges();
+            }
+        }
+
+        public static List<string> GetProjectsByOperator(Operator @operator)
+        {
+            using(var context = new GravitySurveyOnDeleteNoAction())
+            {
+                var flights = context.Flights.Where(f => f.OperatorId == @operator.OperatorId).Select(f => f.ProjectId).ToList();
+                return context.Projects.Where(p => flights.Contains(p.ProjectId)).Select(p => p.ProjectName).ToList();
             }
         }
     }

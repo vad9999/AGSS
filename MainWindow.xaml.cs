@@ -70,7 +70,7 @@ namespace AGSS
                         case "Оператор":
                             if (AuthService.AuthenticateOperator(login, password))
                             {
-                                OperatorWindow window = new OperatorWindow();
+                                OperatorWindow window = new OperatorWindow(OperatorRepository.GetOperator(login, password));
                                 window.Show();
                                 this.Close();
                             }
