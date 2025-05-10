@@ -35,7 +35,13 @@ namespace AGSS
             string Login = LoginBox.Text.Trim();
             string Password = PasswordBox.Text.Trim();
 
-            if(Name != "" && Person != "" && Address != "" && Phone != "" && Email != "" && Login != "" && Password != "")
+            if(Name != string.Empty &&
+                Person != string.Empty &&
+                Address != string.Empty &&
+                Phone != string.Empty &&
+                Email != string.Empty &&
+                Login != string.Empty &&
+                Password != string.Empty)
             {
                 Customer customer = new Customer { OrganizationName = Name, Password = Password, Address = Address, ContactPerson = Person, Email = Email, Login = Login, Phone = Phone };
                 using(var context = new GravitySurveyOnDeleteNoAction())

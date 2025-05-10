@@ -102,35 +102,6 @@
         </ListView>
         <Label Content="Информация о проекте" HorizontalAlignment="Left" Margin="195,0,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="795" HorizontalContentAlignment="Center"/>
         <Label Content="Информация о ведущих специалистах" HorizontalAlignment="Left" Margin="195,93,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="398" HorizontalContentAlignment="Center"/>
-        <Label Content="Информация об аналитиках" HorizontalAlignment="Left" Margin="0,294,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="504" HorizontalContentAlignment="Center"/>
-        <ListView x:Name="AnalystView" Margin="-1,325,0,0" Height="68" VerticalAlignment="Top" HorizontalAlignment="Left" Width="495">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="№" DisplayMemberBinding="{Binding AnalystId}"/>
-                    <GridViewColumn Header="Полное имя">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Номер телефона">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBox Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Адрес">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBox Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>
         <Label Content="Информация об операторе" HorizontalAlignment="Left" Margin="591,93,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="398" HorizontalContentAlignment="Center"/>
         <Label Content="Информация об главном инженере" HorizontalAlignment="Left" Margin="494,294,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="495" HorizontalContentAlignment="Center"/>
         <ListView x:Name="OperatorView" Margin="591,124,0,0" HorizontalAlignment="Left" Width="398" Height="170" VerticalAlignment="Top">
@@ -230,5 +201,7 @@
             <Button x:Name="DeleteBTN" Content="Удалить" HorizontalAlignment="Left" Margin="17,283,0,0" VerticalAlignment="Top" Height="45" Width="123" FontSize="16" Click="DeleteBTN_Click"/>
         </Grid>
         <Label Content="Добавление и удаление данных" Margin="990,0,0,0" VerticalAlignment="Top" Height="31" HorizontalAlignment="Left" Width="570" FontSize="16" FontWeight="Bold" HorizontalContentAlignment="Center"/>
+        <Button x:Name="AnalysticBTN" Content="Статистика" HorizontalAlignment="Left" Margin="98,336,0,0" VerticalAlignment="Top" Height="40" Width="113" Click="AnalysticBTN_Click"/>
+        <Button x:Name="SinteticDataBTN" Content="Синтетические данные" HorizontalAlignment="Left" Margin="246,336,0,0" VerticalAlignment="Top" Height="40" Width="148" Click="SinteticDataBTN_Click"/>
     </Grid>
 </Window>

@@ -89,15 +89,6 @@ namespace AGSS
                     pr.PropertyChanged += (s, e) => EngineerRepository.SaveChanges((ChiefEnginner)s);
                 }
 
-                var Analysts = new ObservableCollection<Analyst>(AnalystRepository.GetDataOfAnalyst());
-
-                AnalystView.ItemsSource = Analysts;
-
-                foreach (var pr in Analysts)
-                {
-                    pr.PropertyChanged += (s, e) => AnalystRepository.SaveChanges((Analyst)s);
-                }
-
                 var Operators = new ObservableCollection<Operator>(OperatorRepository.GetDataOfOperator());
 
                 OperatorView.ItemsSource = Operators;
@@ -1209,7 +1200,7 @@ namespace AGSS
                             }
                             else
                             {
-                                if (ProfileRepository.GetProfiles(ProjectId).Count == 0)
+                                if (ProfileRepository.GetProfiles(AreaRepository.GetAreaIDByProjectID(ProjectId)).Count == 0)
                                 {
                                     MessageBox.Show("Сначала добавьте профиль!");
                                     AddCombo.SelectedItem = null;
@@ -1244,14 +1235,14 @@ namespace AGSS
                             }
                             else
                             {
-                                if (ProfileRepository.GetProfiles(ProjectId).Count == 0)
+                                if (ProfileRepository.GetProfiles(AreaRepository.GetAreaIDByProjectID(ProjectId)).Count == 0)
                                 {
                                     MessageBox.Show("Сначала добавьте профиль!");
                                     AddCombo.SelectedItem = null;
                                 }
                                 else
                                 {
-                                    if (ProfileRepository.GetProfileCoordinates(ProjectId).Count == 0)
+                                    if (ProfileRepository.GetProfileCoordinates(AreaRepository.GetAreaIDByProjectID(ProjectId)).Count == 0)
                                     {
                                         MessageBox.Show("Сначала добавьте координаты профиля!");
                                         AddCombo.SelectedItem = null;
@@ -1285,14 +1276,14 @@ namespace AGSS
                             }
                             else
                             {
-                                if (ProfileRepository.GetProfiles(ProjectId).Count == 0)
+                                if (ProfileRepository.GetProfiles(AreaRepository.GetAreaIDByProjectID(ProjectId)).Count == 0)
                                 {
                                     MessageBox.Show("Сначала добавьте профиль!");
                                     AddCombo.SelectedItem = null;
                                 }
                                 else
                                 {
-                                    if (ProfileRepository.GetProfileCoordinates(ProjectId).Count == 0)
+                                    if (ProfileRepository.GetProfileCoordinates(AreaRepository.GetAreaIDByProjectID(ProjectId)).Count == 0)
                                     {
                                         MessageBox.Show("Сначала добавьте координаты профиля!");
                                         AddCombo.SelectedItem = null;
@@ -1326,14 +1317,14 @@ namespace AGSS
                             }
                             else
                             {
-                                if (ProfileRepository.GetProfiles(ProjectId).Count == 0)
+                                if (ProfileRepository.GetProfiles(AreaRepository.GetAreaIDByProjectID(ProjectId)).Count == 0)
                                 {
                                     MessageBox.Show("Сначала добавьте профиль!");
                                     AddCombo.SelectedItem = null;
                                 }
                                 else
                                 {
-                                    if (ProfileRepository.GetProfileCoordinates(ProjectId).Count == 0)
+                                    if (ProfileRepository.GetProfileCoordinates(AreaRepository.GetAreaIDByProjectID(ProjectId)).Count == 0)
                                     {
                                         MessageBox.Show("Сначала добавьте координаты профиля!");
                                         AddCombo.SelectedItem = null;
@@ -1465,6 +1456,12 @@ namespace AGSS
                 MessageBox.Show("Выберите проект!");
                 AddCombo.SelectedItem = null;
             }
+        }
+
+        private void AnalyticsBTN_Click(object sender, RoutedEventArgs e)
+        {
+            AnalyticsWindow analyticsWindow = new AnalyticsWindow(ProjectId);
+            analyticsWindow.Show();
         }
     }
 }

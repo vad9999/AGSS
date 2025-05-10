@@ -85,17 +85,6 @@
         </ListView>
         <Label Width="795" VerticalAlignment="Top" Margin="195,0,0,0" HorizontalContentAlignment="Center" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold" Content="Информация о проекте"/>
         <Label Width="398" VerticalAlignment="Top" Margin="195,93,0,0" HorizontalContentAlignment="Center" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold" Content="Информация о ведущих специалистах"/>
-        <Label Width="504" VerticalAlignment="Top" Margin="0,294,0,0" HorizontalContentAlignment="Center" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold" Content="Информация об аналитиках"/>
-        <ListView x:Name="AnalystView" Width="495" VerticalAlignment="Top" Margin="-1,325,0,0" Height="68" HorizontalAlignment="Left">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding AnalystId}" Header="№"/>
-                    <GridViewColumn Header="Полное имя" DisplayMemberBinding="{Binding FullName}"/>
-                    <GridViewColumn Header="Номер телефона" DisplayMemberBinding="{Binding Phone}"/>
-                    <GridViewColumn Header="Адрес" DisplayMemberBinding="{Binding Address}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
         <Label Width="398" VerticalAlignment="Top" Margin="591,93,0,0" HorizontalContentAlignment="Center" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold" Content="Информация об операторе"/>
         <Label Width="495" VerticalAlignment="Top" Margin="494,294,0,0" HorizontalContentAlignment="Center" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold" Content="Информация об главном инженере"/>
         <ListView x:Name="OperatorView" Width="398" VerticalAlignment="Top" Margin="591,124,0,0" Height="170" HorizontalAlignment="Left">
@@ -177,5 +166,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button x:Name="AnalyticsBTN" Content="Посмотреть статистику" HorizontalAlignment="Left" Margin="195,359,0,0" VerticalAlignment="Top" Height="34" Width="148" Click="AnalyticsBTN_Click"/>
     </Grid>
 </Window>

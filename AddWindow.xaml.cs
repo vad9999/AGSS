@@ -34,11 +34,11 @@ namespace AGSS
         {
             string Name = ProjectNameBox.Text.Trim();
             string Note = NotesBox.Text.Trim();
-            if(Name != "" && Note != "" && CustomerCombo.SelectedItem != null && SpecialistCombo.SelectedItem != null)
+            if(Name != string.Empty && Note != string.Empty && CustomerCombo.SelectedItem != null && SpecialistCombo.SelectedItem != null)
             {
                 LeadSpecialist lead = (LeadSpecialist)SpecialistCombo.SelectedItem;
                 Customer customer = (Customer)CustomerCombo.SelectedItem;
-                Project project = new Project { ProjectName = Name, Notes = Note, LeadSpecialistId = lead.LeadSpecialistId, CustomerId = customer.CustomerId, ChiefEnginnerId = EngineerRepository.GetEngineer(), AnalystId = AnalystRepository.GetAnalyst() };
+                Project project = new Project { ProjectName = Name, Notes = Note, LeadSpecialistId = lead.LeadSpecialistId, CustomerId = customer.CustomerId, ChiefEnginnerId = EngineerRepository.GetEngineer() };
                 using(var context = new GravitySurveyOnDeleteNoAction())
                 {
                     context.Projects.Add(project);

@@ -23,13 +23,13 @@ namespace AGSS
         public MainWindow()
         {
             InitializeComponent();
-            List<string> positions = new List<string> { "Заказчик", "Главный инженер", "Ведущий специалист", "Оператор", "Аналитик" };
+            List<string> positions = new List<string> { "Заказчик", "Главный инженер", "Ведущий специалист", "Оператор" };
             LoginCombo.ItemsSource = positions;
         }
 
         private void LogInBTN_Click(object sender, RoutedEventArgs e)
         {
-            if(LoginBox.Text.Trim() != "" && PasBox.Password.Trim() != "")
+            if(LoginBox.Text.Trim() != string.Empty && PasBox.Password.Trim() != string.Empty)
             {
                 if (LoginCombo.SelectedItem != null)
                 {
@@ -71,16 +71,6 @@ namespace AGSS
                             if (AuthService.AuthenticateOperator(login, password))
                             {
                                 OperatorWindow window = new OperatorWindow(OperatorRepository.GetOperator(login, password));
-                                window.Show();
-                                this.Close();
-                            }
-                            else
-                                MessageBox.Show("Неверный логин или пароль");
-                            break;
-                        case "Аналитик":
-                            if (AuthService.AuthenticateAnalyst(login, password))
-                            {
-                                AnalystWindow window = new AnalystWindow();
                                 window.Show();
                                 this.Close();
                             }

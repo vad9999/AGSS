@@ -12,7 +12,6 @@ public partial class Project : INotifyPropertyChanged
     private int? _customerId;
     private int? _chiefEngineerId;
     private int? _leadSpecialistId;
-    private int? _analystId;
 
     public int ProjectId { get; set; }
 
@@ -46,13 +45,6 @@ public partial class Project : INotifyPropertyChanged
         set { _leadSpecialistId = value; OnPropertyChanged(); }
     }
 
-    public int? AnalystId
-    {
-        get => _analystId;
-        set { _analystId = value; OnPropertyChanged(); }
-    }
-
-    public virtual Analyst? Analyst { get; set; }
     public virtual ICollection<Area> Areas { get; set; } = new List<Area>();
     public virtual ChiefEnginner? ChiefEnginner { get; set; }
     public virtual Customer? Customer { get; set; }

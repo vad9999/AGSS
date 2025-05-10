@@ -26,14 +26,6 @@ namespace AGSS
             }
         }
 
-        public static bool AuthenticateAnalyst(string username, string password)
-        {
-            using (var context = new GravitySurveyOnDeleteNoAction())
-            {
-                return context.Analysts.Any(c => c.Login == username && c.Password == password);
-            }
-        }
-
         public static bool AuthenticateOperator(string username, string password)
         {
             using (var context = new GravitySurveyOnDeleteNoAction())

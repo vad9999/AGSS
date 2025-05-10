@@ -15,8 +15,6 @@ public partial class GravitySurveyOnDeleteNoAction : DbContext
     {
     }
 
-    public virtual DbSet<Analyst> Analysts { get; set; }
-
     public virtual DbSet<Area> Areas { get; set; }
 
     public virtual DbSet<AreaCoordinate> AreaCoordinates { get; set; }
@@ -53,19 +51,19 @@ public partial class GravitySurveyOnDeleteNoAction : DbContext
     //localhost\SQLEXPRESS
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Analyst>(entity =>
-        {
-            entity.HasKey(e => e.AnalystId).HasName("PK__Analyst__DEC7CE295D87D1B5");
+        //modelBuilder.Entity<Analyst>(entity =>
+        //{
+        //    entity.HasKey(e => e.AnalystId).HasName("PK__Analyst__DEC7CE295D87D1B5");
 
-            entity.ToTable("Analyst");
+        //    entity.ToTable("Analyst");
 
-            entity.Property(e => e.AnalystId).HasColumnName("AnalystID");
-            entity.Property(e => e.Address).HasMaxLength(255);
-            entity.Property(e => e.FullName).HasMaxLength(255);
-            entity.Property(e => e.Login).HasMaxLength(15);
-            entity.Property(e => e.Password).HasMaxLength(15);
-            entity.Property(e => e.Phone).HasMaxLength(50);
-        });
+        //    entity.Property(e => e.AnalystId).HasColumnName("AnalystID");
+        //    entity.Property(e => e.Address).HasMaxLength(255);
+        //    entity.Property(e => e.FullName).HasMaxLength(255);
+        //    entity.Property(e => e.Login).HasMaxLength(15);
+        //    entity.Property(e => e.Password).HasMaxLength(15);
+        //    entity.Property(e => e.Phone).HasMaxLength(50);
+        //});
 
         modelBuilder.Entity<Area>(entity =>
         {
@@ -270,16 +268,16 @@ public partial class GravitySurveyOnDeleteNoAction : DbContext
             entity.ToTable("Project");
 
             entity.Property(e => e.ProjectId).HasColumnName("ProjectID");
-            entity.Property(e => e.AnalystId).HasColumnName("AnalystID");
+            //entity.Property(e => e.AnalystId).HasColumnName("AnalystID");
             entity.Property(e => e.ChiefEnginnerId).HasColumnName("ChiefEnginnerID");
             entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
             entity.Property(e => e.LeadSpecialistId).HasColumnName("LeadSpecialistID");
             entity.Property(e => e.ProjectName).HasMaxLength(255);
 
-            entity.HasOne(d => d.Analyst).WithMany(p => p.Projects)
-                .HasForeignKey(d => d.AnalystId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK__Project__Analyst__5441852A");
+            //entity.HasOne(d => d.Analyst).WithMany(p => p.Projects)
+            //    .HasForeignKey(d => d.AnalystId)
+            //    .OnDelete(DeleteBehavior.Cascade)
+            //    .HasConstraintName("FK__Project__Analyst__5441852A");
 
             entity.HasOne(d => d.ChiefEnginner).WithMany(p => p.Projects)
                 .HasForeignKey(d => d.ChiefEnginnerId)

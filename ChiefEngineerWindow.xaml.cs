@@ -52,7 +52,7 @@ namespace AGSS
         {
             InitializeComponent();
             LoadProjects();
-            AddCombo.ItemsSource = new List<string> {"Площадь", "Координаты площади", "Профиль", "Координаты профиля", "Канал 1", "Канал 2", "Канал 3", "Полет", "Спектрометер", "Метаданые" };
+            AddCombo.ItemsSource = new List<string> { "Площадь", "Координаты площади", "Профиль", "Координаты профиля", "Канал 1", "Канал 2", "Канал 3", "Полет", "Спектрометер", "Метаданые" };
         }
 
         private void LoadProjects()
@@ -97,15 +97,6 @@ namespace AGSS
                     pr.PropertyChanged += (s, e) => EngineerRepository.SaveChanges((ChiefEnginner)s);
                 }
 
-                var Analysts = new ObservableCollection<Analyst>(AnalystRepository.GetDataOfAnalyst());
-
-                AnalystView.ItemsSource = Analysts;
-
-                foreach (var pr in Analysts)
-                {
-                    pr.PropertyChanged += (s, e) => AnalystRepository.SaveChanges((Analyst)s);
-                }
-
                 var Operators = new ObservableCollection<Operator>(OperatorRepository.GetDataOfOperator());
 
                 OperatorView.ItemsSource = Operators;
@@ -116,11 +107,11 @@ namespace AGSS
                 }
             }
 
-            if(ProjectCombo.SelectedItem.ToString() == "Добавить проект")
+            if (ProjectCombo.SelectedItem.ToString() == "Добавить проект")
             {
                 AddWindow addWindow = new AddWindow();
                 addWindow.ShowDialog();
-                if(addWindow.DialogResult == true)
+                if (addWindow.DialogResult == true)
                 {
                     LoadProjects();
                 }
@@ -139,7 +130,10 @@ namespace AGSS
             {
                 series.Points.Add(new DataPoint((double)c.X, (double)c.Y));
             }
-            series.Points.Add(new DataPoint((double)areaCoordinates[0].X, (double)areaCoordinates[0].Y));
+            if (areaCoordinates.Count > 0)
+            {
+                series.Points.Add(new DataPoint((double)areaCoordinates[0].X, (double)areaCoordinates[0].Y));
+            }
 
             plotModel.Series.Add(series);
             DataPlot.Model = plotModel;
@@ -153,11 +147,11 @@ namespace AGSS
 
             List<LineSeries> lines = new List<LineSeries>();
 
-            var line1 = new LineSeries{ MarkerType = MarkerType.Circle };
+            var line1 = new LineSeries { MarkerType = MarkerType.Circle };
 
             LoadDataAreaCoordinates();
 
-            if(areaCoordinates.Count > 0)
+            if (areaCoordinates.Count > 0)
             {
                 foreach (var c in areaCoordinates)
                 {
@@ -169,12 +163,12 @@ namespace AGSS
 
                 if (profileCoordinates.Count > 0)
                 {
-                    foreach(var p in profileData)
+                    foreach (var p in profileData)
                     {
                         LineSeries line = new LineSeries { MarkerType = MarkerType.Circle, Title = $"Профиль {p.ProfileId}" };
-                        foreach(var c in profileCoordinates)
+                        foreach (var c in profileCoordinates)
                         {
-                            if(c.ProfileId == p.ProfileId)
+                            if (c.ProfileId == p.ProfileId)
                             {
                                 line.Points.Add(new DataPoint((double)c.X, (double)c.Y));
                             }
@@ -182,7 +176,7 @@ namespace AGSS
                         lines.Add(line);
                     }
                 }
-                
+
                 foreach (var l in lines)
                     model.Series.Add(l);
 
@@ -200,19 +194,19 @@ namespace AGSS
 
             LoadDataProfile();
 
-            if(channel1Data.Count > 0 && profileCoordinates.Count > 0 && profileData.Count > 0)
+            if (channel1Data.Count > 0 && profileCoordinates.Count > 0 && profileData.Count > 0)
             {
-                foreach(var p in profileData)
+                foreach (var p in profileData)
                 {
                     LineSeries line = new LineSeries { MarkerType = MarkerType.Circle, Title = $"Профиль {p.ProfileId}" };
                     int i = 1;
                     foreach (var coord in profileCoordinates)
                     {
-                        if(p.ProfileId == coord.ProfileId)
+                        if (p.ProfileId == coord.ProfileId)
                         {
                             foreach (var c in channel1Data)
                             {
-                                if(coord.ProfileCoordinatesId == c.ProfileCoordinatesId)
+                                if (coord.ProfileCoordinatesId == c.ProfileCoordinatesId)
                                 {
                                     line.Points.Add(new DataPoint(i++, (double)c.MeasurementResult));
                                 }
@@ -314,7 +308,7 @@ namespace AGSS
 
         private void LoadDataAreaCoordinates()
         {
-            areaCoordinates = new ObservableCollection<AreaCoordinate>(AreaRepository.GetAreaCoordinates(ProjectId));
+            areaCoordinates = new ObservableCollection<AreaCoordinate>(AreaRepository.GetAreaCoordinates(AreaRepository.GetAreaIDByProjectID(ProjectId)));
         }
 
         private void LoadDataProfile()
@@ -413,6 +407,7 @@ namespace AGSS
                     }
 
                     LoadDataAreaCoordinates();
+                    LoadAreaGraph();
 
                     CoordinateView.ItemsSource = areaCoordinates;
 
@@ -698,12 +693,12 @@ namespace AGSS
 
         private void DeleteBTN_Click(object sender, RoutedEventArgs e)
         {
-            if(ProjectCombo.SelectedItem != null)
+            if (ProjectCombo.SelectedItem != null)
             {
                 if (Data.SelectedItem != null)
                 {
                     var select = Data.SelectedItem;
-                    if(select is Channel1)
+                    if (select is Channel1)
                     {
                         using (var context = new GravitySurveyOnDeleteNoAction())
                         {
@@ -714,7 +709,7 @@ namespace AGSS
                         LoadChannel1Graph();
                     }
 
-                    if(select is Channel2)
+                    if (select is Channel2)
                     {
                         using (var context = new GravitySurveyOnDeleteNoAction())
                         {
@@ -725,9 +720,9 @@ namespace AGSS
                         LoadChannel2Graph();
                     }
 
-                    if(select is Channel3)
+                    if (select is Channel3)
                     {
-                        using(var  context = new GravitySurveyOnDeleteNoAction())
+                        using (var context = new GravitySurveyOnDeleteNoAction())
                         {
                             context.Remove(select);
                             context.SaveChanges();
@@ -736,9 +731,9 @@ namespace AGSS
                         LoadChannel3Graph();
                     }
 
-                    if(select is Profile)
+                    if (select is Profile)
                     {
-                        if(MessageBox.Show("Связанные данные так же будут удалены!", "Внимание!", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)
+                        if (MessageBox.Show("Связанные данные так же будут удалены!", "Внимание!", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)
                         {
                             using (var context = new GravitySurveyOnDeleteNoAction())
                             {
@@ -751,7 +746,7 @@ namespace AGSS
                         }
                     }
 
-                    if(select is Area)
+                    if (select is Area)
                     {
                         if (MessageBox.Show("Связанные данные так же будут удалены!", "Внимание!", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)
                         {
@@ -764,7 +759,7 @@ namespace AGSS
                         }
                     }
 
-                    if(select is Flight)
+                    if (select is Flight)
                     {
                         if (MessageBox.Show("Связанные данные так же будут удалены!", "Внимание!", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)
                         {
@@ -805,7 +800,7 @@ namespace AGSS
                     if (CoordinateView.SelectedItem != null)
                     {
                         var select = CoordinateView.SelectedItem;
-                        if(select is AreaCoordinate)
+                        if (select is AreaCoordinate)
                         {
                             using (var context = new GravitySurveyOnDeleteNoAction())
                             {
@@ -821,7 +816,7 @@ namespace AGSS
                             LoadAreaGraph();
                         }
 
-                        if(select is ProfileCoordinate)
+                        if (select is ProfileCoordinate)
                         {
                             if (MessageBox.Show("Связанные данные так же будут удалены!", "Внимание!", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)
                             {
@@ -880,7 +875,7 @@ namespace AGSS
                 switch (AddCombo.SelectedItem.ToString())
                 {
                     case "Площадь":
-                        if(oneBox.Text.Trim().IsNullOrEmpty() &&
+                        if (oneBox.Text.Trim().IsNullOrEmpty() &&
                             twoBox.Text.Trim().IsNullOrEmpty())
                         {
                             MessageBox.Show("Пожалуйста заполните все поля!");
@@ -893,7 +888,7 @@ namespace AGSS
                             twoBox.Text = "";
                             areaData.Add(area);
                         }
-                            break;
+                        break;
                     case "Координаты площади":
                         if (oneBox.Text.Trim().IsNullOrEmpty() &&
                             twoBox.Text.Trim().IsNullOrEmpty())
@@ -909,7 +904,7 @@ namespace AGSS
                             twoBox.Text = "";
                             areaCoordinates.Add(areacoord);
 
-                            switch(choise)
+                            switch (choise)
                             {
                                 case 1:
                                     LoadDataArea();
@@ -937,7 +932,7 @@ namespace AGSS
                         }
                         else
                         {
-                            if(ProfileRepository.CheckProfileId(int.Parse(threeBox.Text.Trim())))
+                            if (ProfileRepository.CheckProfileId(int.Parse(threeBox.Text.Trim())))
                             {
                                 ProfileCoordinate coordinate = new ProfileCoordinate { ProfileId = int.Parse(threeBox.Text.Trim()), X = double.Parse(oneBox.Text.Trim().Replace('.', ',')), Y = double.Parse(twoBox.Text.Trim().Replace('.', ',')) };
                                 ProfileRepository.AddCoordinate(coordinate);
@@ -947,7 +942,7 @@ namespace AGSS
                                 twoBox.Text = "";
                                 threeBox.Text = "";
 
-                                switch(choise)
+                                switch (choise)
                                 {
                                     case 2:
                                         LoadDataProfile();
@@ -971,7 +966,7 @@ namespace AGSS
                                 threeBox.Text = "";
                             }
                         }
-                            break;
+                        break;
                     case "Канал 1":
                         if (oneBox.Text.Trim().IsNullOrEmpty() &&
                             twoBox.Text.Trim().IsNullOrEmpty())
@@ -980,7 +975,7 @@ namespace AGSS
                         }
                         else
                         {
-                            if(ProfileRepository.CheckProfileCoordinatesId(int.Parse(twoBox.Text.Trim())))
+                            if (ProfileRepository.CheckProfileCoordinatesId(int.Parse(twoBox.Text.Trim())))
                             {
                                 Channel1 channel1 = new Channel1 { MeasurementResult = double.Parse(oneBox.Text.Trim().Replace('.', ',')), ProfileCoordinatesId = int.Parse(twoBox.Text.Trim()) };
                                 ChannelsRepository.AddChannel1(channel1);
@@ -989,7 +984,7 @@ namespace AGSS
                                 oneBox.Text = "";
                                 twoBox.Text = "";
 
-                                if(choise == 3)
+                                if (choise == 3)
                                     LoadChannel1Graph();
                             }
                             else
@@ -998,7 +993,7 @@ namespace AGSS
                                 twoBox.Text = "";
                             }
                         }
-                            break;
+                        break;
                     case "Канал 2":
                         if (oneBox.Text.Trim().IsNullOrEmpty() &&
                             twoBox.Text.Trim().IsNullOrEmpty())
@@ -1064,7 +1059,7 @@ namespace AGSS
                         }
                         else
                         {
-                            Flight flight = new Flight { StartDateTime = DateTime.Parse(oneBox.Text.Trim()), EndDateTime = DateTime.Parse(twoBox.Text.Trim()), AltitudeAboveSea = double.Parse(threeBox.Text.Trim().Replace('.',',')), AltitudeAboveGround = double.Parse(fourBox.Text.Trim().Replace('.', ',')), Speed = double.Parse(fiveBox.Text.Trim().Replace('.', ',')), ProjectId = ProjectId, OperatorId = null};
+                            Flight flight = new Flight { StartDateTime = DateTime.Parse(oneBox.Text.Trim()), EndDateTime = DateTime.Parse(twoBox.Text.Trim()), AltitudeAboveSea = double.Parse(threeBox.Text.Trim().Replace('.', ',')), AltitudeAboveGround = double.Parse(fourBox.Text.Trim().Replace('.', ',')), Speed = double.Parse(fiveBox.Text.Trim().Replace('.', ',')), ProjectId = ProjectId, OperatorId = null };
                             FlightRepository.Add(flight);
                             flightData.Add(flight);
 
@@ -1073,8 +1068,8 @@ namespace AGSS
                             threeBox.Text = "";
                             fourBox.Text = "";
                             fiveBox.Text = "";
-                        }    
-                            break;
+                        }
+                        break;
                     case "Спектрометер":
                         if (oneBox.Text.Trim().IsNullOrEmpty() &&
                             twoBox.Text.Trim().IsNullOrEmpty() &&
@@ -1086,7 +1081,7 @@ namespace AGSS
                         }
                         else
                         {
-                            if(FlightRepository.CheckFlightId(int.Parse(fiveBox.Text.Trim())))
+                            if (FlightRepository.CheckFlightId(int.Parse(fiveBox.Text.Trim())))
                             {
                                 Spectrometer spectrometer = new Spectrometer { MeasurementTime = double.Parse(oneBox.Text.Trim().Replace('.', ',')), PulseCount = int.Parse(twoBox.Text.Trim()), TotalCount = int.Parse(threeBox.Text.Trim()), EnergyWindowsCount = int.Parse(fourBox.Text.Trim()), FlightId = int.Parse(fiveBox.Text.Trim()) };
                                 SpectrometerRepository.Add(spectrometer);
@@ -1104,7 +1099,7 @@ namespace AGSS
                                 fiveBox.Text = "";
                             }
                         }
-                            break;
+                        break;
                     case "Метаданые":
                         if (oneBox.Text.Trim().IsNullOrEmpty() &&
                             twoBox.Text.Trim().IsNullOrEmpty() &&
@@ -1114,7 +1109,7 @@ namespace AGSS
                         }
                         else
                         {
-                            if(SpectrometerRepository.CheckSpectrometerId(int.Parse(threeBox.Text.Trim())))
+                            if (SpectrometerRepository.CheckSpectrometerId(int.Parse(threeBox.Text.Trim())))
                             {
                                 Metadata metadata = new Metadata { EquipmentDescription = oneBox.Text.Trim(), Notes = twoBox.Text.Trim(), SpectrometerId = int.Parse(threeBox.Text.Trim()) };
                                 MetadataRepository.Add(metadata);
@@ -1148,7 +1143,7 @@ namespace AGSS
                     switch (AddCombo.SelectedItem.ToString())
                     {
                         case "Площадь":
-                            if(AreaRepository.GetDataOfArea(ProjectId).Count == 0)
+                            if (AreaRepository.GetDataOfArea(ProjectId).Count == 0)
                             {
                                 oneLabel.Visibility = Visibility.Visible;
                                 oneLabel.Content = "Геологическая информация";
@@ -1171,9 +1166,9 @@ namespace AGSS
                                 MessageBox.Show("Площадь уже добавлена!");
                                 AddCombo.SelectedItem = null;
                             }
-                                break;
+                            break;
                         case "Координаты площади":
-                            if(AreaRepository.GetDataOfArea(ProjectId).Count == 0)
+                            if (AreaRepository.GetDataOfArea(ProjectId).Count == 0)
                             {
                                 MessageBox.Show("Сначала добавьте площадь!");
                                 AddCombo.SelectedItem = null;
@@ -1220,14 +1215,14 @@ namespace AGSS
                             }
                             break;
                         case "Координаты профиля":
-                            if(AreaRepository.GetDataOfArea(ProjectId).Count == 0)
+                            if (AreaRepository.GetDataOfArea(ProjectId).Count == 0)
                             {
                                 MessageBox.Show("Сначала добавьте площадь!");
                                 AddCombo.SelectedItem = null;
                             }
                             else
                             {
-                                if (ProfileRepository.GetProfiles(ProjectId).Count == 0)
+                                if (ProfileRepository.GetProfiles(AreaRepository.GetAreaIDByProjectID(ProjectId)).Count == 0)
                                 {
                                     MessageBox.Show("Сначала добавьте профиль!");
                                     AddCombo.SelectedItem = null;
@@ -1262,14 +1257,14 @@ namespace AGSS
                             }
                             else
                             {
-                                if (ProfileRepository.GetProfiles(ProjectId).Count == 0)
+                                if (ProfileRepository.GetProfiles(AreaRepository.GetAreaIDByProjectID(ProjectId)).Count == 0)
                                 {
                                     MessageBox.Show("Сначала добавьте профиль!");
                                     AddCombo.SelectedItem = null;
                                 }
                                 else
                                 {
-                                    if(ProfileRepository.GetProfileCoordinates(ProjectId).Count == 0)
+                                    if (ProfileRepository.GetProfileCoordinates(AreaRepository.GetAreaIDByProjectID(ProjectId)).Count == 0)
                                     {
                                         MessageBox.Show("Сначала добавьте координаты профиля!");
                                         AddCombo.SelectedItem = null;
@@ -1294,7 +1289,7 @@ namespace AGSS
                                     }
                                 }
                             }
-                                break;
+                            break;
                         case "Канал 2":
                             if (AreaRepository.GetDataOfArea(ProjectId).Count == 0)
                             {
@@ -1303,14 +1298,14 @@ namespace AGSS
                             }
                             else
                             {
-                                if (ProfileRepository.GetProfiles(ProjectId).Count == 0)
+                                if (ProfileRepository.GetProfiles(AreaRepository.GetAreaIDByProjectID(ProjectId)).Count == 0)
                                 {
                                     MessageBox.Show("Сначала добавьте профиль!");
                                     AddCombo.SelectedItem = null;
                                 }
                                 else
                                 {
-                                    if (ProfileRepository.GetProfileCoordinates(ProjectId).Count == 0)
+                                    if (ProfileRepository.GetProfileCoordinates(AreaRepository.GetAreaIDByProjectID(ProjectId)).Count == 0)
                                     {
                                         MessageBox.Show("Сначала добавьте координаты профиля!");
                                         AddCombo.SelectedItem = null;
@@ -1344,14 +1339,14 @@ namespace AGSS
                             }
                             else
                             {
-                                if (ProfileRepository.GetProfiles(ProjectId).Count == 0)
+                                if (ProfileRepository.GetProfiles(AreaRepository.GetAreaIDByProjectID(ProjectId)).Count == 0)
                                 {
                                     MessageBox.Show("Сначала добавьте профиль!");
                                     AddCombo.SelectedItem = null;
                                 }
                                 else
                                 {
-                                    if (ProfileRepository.GetProfileCoordinates(ProjectId).Count == 0)
+                                    if (ProfileRepository.GetProfileCoordinates(AreaRepository.GetAreaIDByProjectID(ProjectId)).Count == 0)
                                     {
                                         MessageBox.Show("Сначала добавьте координаты профиля!");
                                         AddCombo.SelectedItem = null;
@@ -1399,7 +1394,7 @@ namespace AGSS
                             fiveBox.Visibility = Visibility.Visible;
                             break;
                         case "Спектрометер":
-                            if(FlightRepository.GetDataOfFlight(ProjectId).Count == 0)
+                            if (FlightRepository.GetDataOfFlight(ProjectId).Count == 0)
                             {
                                 MessageBox.Show("Сначала добавьте данные о полет");
                                 AddCombo.SelectedItem = null;
@@ -1426,16 +1421,16 @@ namespace AGSS
                                 fiveLabel.Content = "Номер полета";
                                 fiveBox.Visibility = Visibility.Visible;
                             }
-                                break;
+                            break;
                         case "Метаданые":
                             if (FlightRepository.GetDataOfFlight(ProjectId).Count == 0)
-                            {   
+                            {
                                 MessageBox.Show("Сначала добавьте данные о полет");
                                 AddCombo.SelectedItem = null;
                             }
                             else
                             {
-                                if(SpectrometerRepository.GetDataOfSpectrometer(FlightRepository.GetFlightIDByProjectID(ProjectId)).Count == 0)
+                                if (SpectrometerRepository.GetDataOfSpectrometer(FlightRepository.GetFlightIDByProjectID(ProjectId)).Count == 0)
                                 {
                                     MessageBox.Show("Сначала добавьте данные о спектрометре");
                                     AddCombo.SelectedItem = null;
@@ -1461,7 +1456,7 @@ namespace AGSS
                                     fiveBox.Visibility = Visibility.Hidden;
                                 }
                             }
-                                break;
+                            break;
                     }
                 }
                 else
@@ -1484,5 +1479,100 @@ namespace AGSS
                 AddCombo.SelectedItem = null;
             }
         }
+
+        private void AnalysticBTN_Click(object sender, RoutedEventArgs e)
+        {
+            AnalyticsWindow analyticsWindow = new(ProjectId);
+            analyticsWindow.ShowDialog();
+        }
+
+        private void SinteticDataBTN_Click(object sender, RoutedEventArgs e)
+        {
+            if (AreaRepository.GetAreaIDByProjectID(ProjectId) != -1)
+            {
+                try
+                {
+                    using (var context = new GravitySurveyOnDeleteNoAction())
+                    {
+                        Random random = new();
+                        List<int> areaCoordListX = new();
+                        List<int> areaCoordListY = new();
+
+                        Area area = new Area { GeologicalInfo = "Геологическая информация", Area1 = random.NextDouble() * 100, ProfileCount = 0, BreaksCount = 0, ProjectId = ProjectId };
+                        context.Areas.Add(area);
+                        context.SaveChanges();
+
+                        for (int i = 0; i <= random.Next(3, 16); i++)
+                        {
+                            int X = random.Next(0, 76);
+                            int Y = random.Next(0, 76);
+                            areaCoordListX.Add(X);
+                            areaCoordListY.Add(Y);
+                            AreaCoordinate areaCoordinate = new AreaCoordinate { AreaId = area.AreaId, X = X, Y = Y };
+                            AreaRepository.AreaBreakCount(ProjectId);
+                            context.AreaCoordinates.Add(areaCoordinate);
+                            context.SaveChanges();
+                        }
+
+                        for (int i = 0; i <= random.Next(1, 10); i++)
+                        {
+                            Profile profile = new Profile { AreaId = area.AreaId, BreaksCount = 0 };
+                            context.Profiles.Add(profile);
+                            context.SaveChanges();
+                            for (int j = 0; j <= random.Next(2, 9); j++)
+                            {
+                                int X = random.Next(1, 75);
+                                int Y = random.Next(1, 75);
+                                while(!IsPointInPolygon(X, Y, areaCoordListX, areaCoordListY))
+                                {
+                                    X = random.Next(1, 75);
+                                    Y = random.Next(1, 75);
+                                }
+                                ProfileCoordinate profileCoordinate = new ProfileCoordinate { ProfileId = profile.ProfileId, X = X, Y = Y };
+                                context.ProfileCoordinates.Add(profileCoordinate);
+                                context.SaveChanges();
+
+                                Channel1 channel1 = new Channel1 { ProfileCoordinatesId = profileCoordinate.ProfileCoordinatesId, MeasurementResult = random.Next(50, 1001) };
+                                Channel2 channel2 = new Channel2 { ProfileCoordinatesId = profileCoordinate.ProfileCoordinatesId, MeasurementResult = random.Next(50, 1001) };
+                                Channel3 channel3 = new Channel3 { ProfileCoordinatesId = profileCoordinate.ProfileCoordinatesId, MeasurementResult = random.Next(50, 1001) };
+
+                                context.Channel1s.Add(channel1);
+                                context.Channel2s.Add(channel2);
+                                context.Channel3s.Add(channel3);
+                                context.SaveChanges();
+                            }
+                        }
+
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка генерации: {ex.Message}");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Удалите площадь чтобы сгенерировать данные");
+            }
+        }
+
+        public static bool IsPointInPolygon(double pointX, double pointY, List<int> xCoords, List<int> yCoords)
+        {
+            int n = xCoords.Count;
+            bool inside = false;
+
+            for (int i = 0, j = n - 1; i < n; j = i++)
+            {
+                if ((yCoords[i] > pointY) != (yCoords[j] > pointY) &&
+                    (pointX < (xCoords[j] - xCoords[i]) * (pointY - yCoords[i]) / (yCoords[j] - yCoords[i]) + xCoords[i]))
+                {
+                inside = !inside;
+                }
+            }
+
+            return inside;
+        }
     }
 }
+
