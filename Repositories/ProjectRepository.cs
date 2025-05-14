@@ -94,11 +94,11 @@ namespace AGSS.Repositories
             }
         }
 
-        public static int GetProjectBySpecialist(LeadSpecialist specialist)
+        public static List<Project> GetProjectBySpecialist(LeadSpecialist specialist)
         {
             using(var context = new GravitySurveyOnDeleteNoAction())
             {
-                return context.Projects.OrderByDescending(e => e.LeadSpecialist == specialist).FirstOrDefault()?.ProjectId ?? -1;
+                return context.Projects.Where(e => e.LeadSpecialistId == specialist.LeadSpecialistId).ToList(); ;
             }
         }
 

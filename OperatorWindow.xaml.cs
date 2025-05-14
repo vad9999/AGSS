@@ -280,7 +280,7 @@ namespace AGSS
 
         private void LoadDataAreaCoordinates()
         {
-            areaCoordinates = new ObservableCollection<AreaCoordinate>(AreaRepository.GetAreaCoordinates(ProjectId));
+            areaCoordinates = new ObservableCollection<AreaCoordinate>(AreaRepository.GetAreaCoordinates(AreaRepository.GetAreaIDByProjectID(ProjectId)));
         }
 
         private void LoadDataProfile()
@@ -804,6 +804,7 @@ namespace AGSS
                                 switch (choise)
                                 {
                                     case 2:
+                                        LoadDataProfile();
                                         Data.ItemsSource = profileData;
                                         LoadProfileGraph();
                                         break;

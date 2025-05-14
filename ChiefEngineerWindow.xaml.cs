@@ -833,6 +833,7 @@ namespace AGSS
                                 switch (choise)
                                 {
                                     case 2:
+                                        LoadDataProfile();
                                         Data.ItemsSource = profileData;
                                         LoadProfileGraph();
                                         break;
@@ -1482,73 +1483,91 @@ namespace AGSS
 
         private void AnalysticBTN_Click(object sender, RoutedEventArgs e)
         {
-            AnalyticsWindow analyticsWindow = new(ProjectId);
-            analyticsWindow.ShowDialog();
+            if(ProjectCombo.SelectedItem != null)
+            {
+                AnalyticsWindow analyticsWindow = new(ProjectId);
+                analyticsWindow.ShowDialog();
+            }
         }
 
         private void SinteticDataBTN_Click(object sender, RoutedEventArgs e)
         {
             if (AreaRepository.GetAreaIDByProjectID(ProjectId) != -1)
             {
-                try
+                using (var context = new GravitySurveyOnDeleteNoAction())
                 {
-                    using (var context = new GravitySurveyOnDeleteNoAction())
-                    {
-                        Random random = new();
-                        List<int> areaCoordListX = new();
-                        List<int> areaCoordListY = new();
+                    Random random = new();
+                    List<int> areaCoordListX = new();
+                    List<int> areaCoordListY = new();
 
-                        Area area = new Area { GeologicalInfo = "Геологическая информация", Area1 = random.NextDouble() * 100, ProfileCount = 0, BreaksCount = 0, ProjectId = ProjectId };
-                        context.Areas.Add(area);
+                    Area area = new Area { GeologicalInfo = "Геологическая информация", Area1 = random.NextDouble() * 100, ProfileCount = 0, BreaksCount = 0, ProjectId = ProjectId };
+                    context.Areas.Add(area);
+                    context.SaveChanges();
+
+                    for (int i = 0; i <= random.Next(3, 16); i++)
+                    {
+                        int X = random.Next(0, 76);
+                        int Y = random.Next(0, 76);
+                        areaCoordListX.Add(X);
+                        areaCoordListY.Add(Y);
+                        AreaCoordinate areaCoordinate = new AreaCoordinate { AreaId = area.AreaId, X = X, Y = Y };
+                        AreaRepository.AreaBreakCount(ProjectId);
+                        context.AreaCoordinates.Add(areaCoordinate);
+                        context.SaveChanges();
+                    }
+
+                    for (int i = 0; i <= random.Next(1, 10); i++)
+                    {
+                        Profile profile = new Profile { AreaId = area.AreaId, BreaksCount = 0 };
+                        context.Profiles.Add(profile);
                         context.SaveChanges();
 
-                        for (int i = 0; i <= random.Next(3, 16); i++)
-                        {
-                            int X = random.Next(0, 76);
-                            int Y = random.Next(0, 76);
-                            areaCoordListX.Add(X);
-                            areaCoordListY.Add(Y);
-                            AreaCoordinate areaCoordinate = new AreaCoordinate { AreaId = area.AreaId, X = X, Y = Y };
-                            AreaRepository.AreaBreakCount(ProjectId);
-                            context.AreaCoordinates.Add(areaCoordinate);
-                            context.SaveChanges();
-                        }
+                        AreaRepository.AreaProfileCount(ProjectId);
 
-                        for (int i = 0; i <= random.Next(1, 10); i++)
+                        for (int j = 0; j <= random.Next(2, 9); j++)
                         {
-                            Profile profile = new Profile { AreaId = area.AreaId, BreaksCount = 0 };
-                            context.Profiles.Add(profile);
-                            context.SaveChanges();
-                            for (int j = 0; j <= random.Next(2, 9); j++)
+                            int X = random.Next(1, 75);
+                            int Y = random.Next(1, 75);
+                            while(!IsPointInPolygon(X, Y, areaCoordListX, areaCoordListY))
                             {
-                                int X = random.Next(1, 75);
-                                int Y = random.Next(1, 75);
-                                while(!IsPointInPolygon(X, Y, areaCoordListX, areaCoordListY))
-                                {
-                                    X = random.Next(1, 75);
-                                    Y = random.Next(1, 75);
-                                }
-                                ProfileCoordinate profileCoordinate = new ProfileCoordinate { ProfileId = profile.ProfileId, X = X, Y = Y };
-                                context.ProfileCoordinates.Add(profileCoordinate);
-                                context.SaveChanges();
-
-                                Channel1 channel1 = new Channel1 { ProfileCoordinatesId = profileCoordinate.ProfileCoordinatesId, MeasurementResult = random.Next(50, 1001) };
-                                Channel2 channel2 = new Channel2 { ProfileCoordinatesId = profileCoordinate.ProfileCoordinatesId, MeasurementResult = random.Next(50, 1001) };
-                                Channel3 channel3 = new Channel3 { ProfileCoordinatesId = profileCoordinate.ProfileCoordinatesId, MeasurementResult = random.Next(50, 1001) };
-
-                                context.Channel1s.Add(channel1);
-                                context.Channel2s.Add(channel2);
-                                context.Channel3s.Add(channel3);
-                                context.SaveChanges();
+                                X = random.Next(1, 75);
+                                Y = random.Next(1, 75);
                             }
+                            ProfileCoordinate profileCoordinate = new ProfileCoordinate { ProfileId = profile.ProfileId, X = X, Y = Y };
+                            context.ProfileCoordinates.Add(profileCoordinate);
+                            context.SaveChanges();
+
+                            ProfileRepository.ProfileBreakCount(profile.ProfileId);
+
+                            Channel1 channel1 = new Channel1 { ProfileCoordinatesId = profileCoordinate.ProfileCoordinatesId, MeasurementResult = random.Next(50, 1001) };
+                            Channel2 channel2 = new Channel2 { ProfileCoordinatesId = profileCoordinate.ProfileCoordinatesId, MeasurementResult = random.Next(50, 1001) };
+                            Channel3 channel3 = new Channel3 { ProfileCoordinatesId = profileCoordinate.ProfileCoordinatesId, MeasurementResult = random.Next(50, 1001) };
+
+                            context.Channel1s.Add(channel1);
+                            context.Channel2s.Add(channel2);
+                            context.Channel3s.Add(channel3);
+                            context.SaveChanges();
                         }
-
-
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка генерации: {ex.Message}");
+
+                    DateTime StartDate = new DateTime(random.Next(2010, 2025), random.Next(1, 13), random.Next(1, 29), random.Next(5, 21), random.Next(0, 60), 0);
+                    DateTime EndDate = new DateTime(random.Next(2010, 2025), random.Next(1, 13), random.Next(1, 29), random.Next(5, 21), random.Next(0, 60), 0);
+                    while (StartDate > EndDate)
+                    {
+                        EndDate = new DateTime(random.Next(2010, 2025), random.Next(1, 13), random.Next(1, 29), random.Next(5, 21), random.Next(0, 60), 0);
+                    }
+                    int Height = random.Next(20, 101);
+                    Flight flight = new Flight { StartDateTime = StartDate, EndDateTime = EndDate, AltitudeAboveGround = Height, AltitudeAboveSea = Height + 20, Speed = random.NextDouble() * 100, ProjectId = ProjectId, OperatorId = OperatorRepository.GetDataOfOperator()[0].OperatorId };
+                    context.Flights.Add(flight);
+                    context.SaveChanges();
+
+                    Spectrometer spectrometer = new Spectrometer { EnergyWindowsCount = random.Next(3, 6), MeasurementTime = random.NextDouble() * 100, PulseCount = random.Next(3, 16), TotalCount = random.Next(7, 16), FlightId = flight.FlightId };
+                    context.Spectrometers.Add(spectrometer);
+                    context.SaveChanges();
+
+                    Metadata metadata = new Metadata { EquipmentDescription = "Описание отсутствует", Notes = "Записи отсутствуют", SpectrometerId = spectrometer.SpectrometerId };
+                    context.Metadata.Add(metadata);
+                    context.SaveChanges();
                 }
             }
             else

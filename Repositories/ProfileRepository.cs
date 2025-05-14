@@ -99,7 +99,7 @@ namespace AGSS.Repositories
                 List<ProfileCoordinate> coordinate = context.ProfileCoordinates.Where(p => p.ProfileId == profile).ToList();
                 if(coordinate.Count > 2)
                 {
-                    profile1.BreaksCount++;
+                    profile1.BreaksCount += 1;
                     context.Profiles.Update(profile1);
                     context.SaveChanges();
                 }

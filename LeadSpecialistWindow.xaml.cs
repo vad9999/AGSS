@@ -27,7 +27,6 @@ namespace AGSS
     {
         private LeadSpecialist LeadSpecialist;
         private int ProjectId;
-        private string ProjectName;
 
         private ObservableCollection<Area> areaData = new ObservableCollection<Area>();
         private ObservableCollection<AreaCoordinate> areaCoordinates = new ObservableCollection<AreaCoordinate>();
@@ -47,23 +46,28 @@ namespace AGSS
         {
             InitializeComponent();
             LeadSpecialist = specialist;
-            if(ProjectRepository.GetProjectBySpecialist(specialist) != null)
+            ProjectCombo.ItemsSource = ProjectRepository.GetProjectBySpecialist(LeadSpecialist);
+            ProjectCombo.DisplayMemberPath = "ProjectName";
+            AddCombo.ItemsSource = new List<string> { "Метаданые", "Спектрометер", "Полет", "Канал 3", "Канал 2", "Канал 1", "Координаты профиля", "Профиль", "Координаты площади", "Площадь" };
+        }
+
+        private void ProjectCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(ProjectCombo.SelectedItem != null)
             {
-                ProjectId = ProjectRepository.GetProjectBySpecialist(specialist);
-                ProjectLabel.Content = ProjectRepository.GetProjectNameById(ProjectId);
-                ProjectName = ProjectLabel.Content.ToString();
+                Project project = (Project)ProjectCombo.SelectedItem;
+                ProjectId = ProjectRepository.GetIDByProjectName(project.ProjectName);
                 LoadProjectData();
             }
             else
             {
-                MessageBox.Show("У вас нету проектов!");
+                MessageBox.Show("Выберите проект");
             }
-            
         }
 
         private void LoadProjectData()
         {
-            if (ProjectName != "")
+            if (ProjectCombo.SelectedItem != null)
             {
                 var Projects = new ObservableCollection<Project>(ProjectRepository.GetDataOfProject(ProjectId));
                 ProjectView.ItemsSource = Projects;
@@ -112,7 +116,9 @@ namespace AGSS
             {
                 series.Points.Add(new DataPoint((double)c.X, (double)c.Y));
             }
-            series.Points.Add(new DataPoint((double)areaCoordinates[0].X, (double)areaCoordinates[0].Y));
+
+            if(areaCoordinates.Count >= 1)
+                series.Points.Add(new DataPoint((double)areaCoordinates[0].X, (double)areaCoordinates[0].Y));
 
             plotModel.Series.Add(series);
             DataPlot.Model = plotModel;
@@ -287,7 +293,7 @@ namespace AGSS
 
         private void LoadDataAreaCoordinates()
         {
-            areaCoordinates = new ObservableCollection<AreaCoordinate>(AreaRepository.GetAreaCoordinates(ProjectId));
+            areaCoordinates = new ObservableCollection<AreaCoordinate>(AreaRepository.GetAreaCoordinates(AreaRepository.GetAreaIDByProjectID(ProjectId)));
         }
 
         private void LoadDataProfile()
@@ -340,7 +346,7 @@ namespace AGSS
         {
             if (DataTree.SelectedItem is TreeViewItem selectedItem)
             {
-                if (ProjectName != "")
+                if (ProjectCombo.SelectedItem != null)
                 {
                     switch (selectedItem.Header.ToString())
                     {
@@ -671,7 +677,7 @@ namespace AGSS
 
         private void DeleteBTN_Click(object sender, RoutedEventArgs e)
         {
-            if (ProjectName != "")
+            if (ProjectCombo.SelectedItem != null)
             {
                 if (Data.SelectedItem != null)
                 {
@@ -811,6 +817,7 @@ namespace AGSS
                                 switch (choise)
                                 {
                                     case 2:
+                                        LoadDataProfile();
                                         Data.ItemsSource = profileData;
                                         LoadProfileGraph();
                                         break;
@@ -1114,7 +1121,7 @@ namespace AGSS
 
         private void AddCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ProjectName != "")
+            if (ProjectCombo.SelectedItem != null)
             {
                 if (AddCombo.SelectedItem != null)
                 {
@@ -1460,8 +1467,15 @@ namespace AGSS
 
         private void AnalyticsBTN_Click(object sender, RoutedEventArgs e)
         {
-            AnalyticsWindow analyticsWindow = new AnalyticsWindow(ProjectId);
-            analyticsWindow.Show();
+            if(ProjectCombo.SelectedItem != null)
+            {
+                AnalyticsWindow analyticsWindow = new AnalyticsWindow(ProjectId);
+                analyticsWindow.Show();
+            }
+            else
+            {
+                MessageBox.Show("Выберите проект");
+            }
         }
     }
 }

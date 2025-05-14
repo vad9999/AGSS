@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGSS"
         mc:Ignorable="d"
-        Title="AddWindow" Height="214" Width="539">
+        Title="Добавление проекта" Height="214" Width="539">
     <Grid>
         <Label Content="Проект" HorizontalAlignment="Left" Margin="270,0,0,0" VerticalAlignment="Top" Width="269" HorizontalContentAlignment="Center"/>
         <Button x:Name="AddBTN" Content="Создать" HorizontalAlignment="Left" Margin="396,125,0,0" VerticalAlignment="Top" Height="33" Width="110" Click="AddBTN_Click"/>
@@ -19,6 +19,5 @@
         <Button x:Name="AddCustomerBTN" Content="Добавить заказчика" HorizontalAlignment="Left" Margin="139,67,0,0" VerticalAlignment="Top" Width="126" Height="34" Click="AddCustomerBTN_Click"/>
         <Label Content="Заказчик" HorizontalAlignment="Left" VerticalAlignment="Top" Width="270" HorizontalContentAlignment="Center"/>
         <Label Content="Заказчик" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top"/>
-
     </Grid>
 </Window>

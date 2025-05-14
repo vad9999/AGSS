@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGSS"
         mc:Ignorable="d"
-        Title="AddCustomerWindow" Height="293" Width="268">
+        Title="Добавление заказчика" Height="293" Width="268">
     <Grid>
         <TextBox x:Name="CustomerNameBox" HorizontalAlignment="Left" Margin="131,33,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="101"/>
         <TextBox x:Name="PersonBox" HorizontalAlignment="Left" Margin="131,55,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="101"/>
@@ -23,6 +23,5 @@
         <Label Content="Логин" HorizontalAlignment="Left" Margin="13,142,0,0" VerticalAlignment="Top"/>
         <Label Content="Пароль" HorizontalAlignment="Left" Margin="13,165,0,0" VerticalAlignment="Top"/>
         <Button x:Name="AddBTN" Content="Добавить" Margin="137,204,0,0" VerticalAlignment="Top" Height="34" HorizontalAlignment="Left" Width="89" Click="AddBTN_Click"/>
-
     </Grid>
 </Window>

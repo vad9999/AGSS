@@ -5,10 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGSS"
         mc:Ignorable="d"
-        Title="CustomerWindow" Height="450" Width="800" Background="Gray">
+        Title="Заказчик" Height="450" Width="800" Background="Gray">
     <Grid>
         <ComboBox x:Name="ProjectCombo" HorizontalAlignment="Left" VerticalAlignment="Top" Width="172"/>
-        <Button x:Name="ExitBTN" Content="Выйти" Margin="662,374,0,0" VerticalAlignment="Top" Height="38" Click="ExitBTN_Click" FontSize="16" HorizontalAlignment="Left" Width="104"/>
         <TreeView x:Name="DataTree" Margin="0,22,0,0" FontSize="18" SelectedItemChanged="DataTree_SelectedItemChanged" HorizontalAlignment="Left" Width="172">
             <TreeViewItem Header="Площадь">
                 <TreeViewItem Header="Профиль">
@@ -23,7 +22,7 @@
                 </TreeViewItem>
             </TreeViewItem>
         </TreeView>
-        <ListView x:Name="Data" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="205,78,133,77">
+        <ListView x:Name="Data" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="190,40,0,0" HorizontalAlignment="Left" Width="576" Height="360" VerticalAlignment="Top">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>

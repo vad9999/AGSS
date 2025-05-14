@@ -6,13 +6,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGSS"
         mc:Ignorable="d"
-        Title="AnalystWindow" Height="802" Width="1101" Background="Gray">
-    <Grid>
+        Title="Аналитика" Height="802" Width="774" Background="Gray">
+    <Grid x:Name="MainGrid">
         <Label x:Name="AreaChannel1" Content="Среднее значение канала 1 на площади: " HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="14"/>
         <Label x:Name="AreaChannel2" Content="Среднее значение канала 2 на площади: " HorizontalAlignment="Left" Margin="10,44,0,0" VerticalAlignment="Top" FontSize="14"/>
         <Label x:Name="AreaChannel3" Content="Среднее значение канала 3 на площади: " HorizontalAlignment="Left" Margin="10,78,0,0" VerticalAlignment="Top" FontSize="14"/>
-        <Label x:Name="Speed" Content="Средняя скорость полётов: " HorizontalAlignment="Left" Margin="387,10,0,0" VerticalAlignment="Top" FontSize="14"/>
-        <Label x:Name="Height" Content="Средняя высота полётов: " HorizontalAlignment="Left" Margin="387,44,0,0" VerticalAlignment="Top" FontSize="14"/>
-        <Label x:Name="Time" Content="Средняя время полётов: " HorizontalAlignment="Left" Margin="387,78,0,0" VerticalAlignment="Top" FontSize="14"/>
+        <Label x:Name="Speed" Content="Средняя скорость полётов: " HorizontalAlignment="Left" Margin="390,10,0,0" VerticalAlignment="Top" FontSize="14"/>
+        <Label x:Name="Height" Content="Средняя высота полётов: " HorizontalAlignment="Left" Margin="390,44,0,0" VerticalAlignment="Top" FontSize="14"/>
+        <Label x:Name="Time" Content="Средняя время полётов: " HorizontalAlignment="Left" Margin="390,78,0,0" VerticalAlignment="Top" FontSize="14"/>
+        <DataGrid x:Name="DataGrid1" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,174,0,0" HorizontalAlignment="Left" Width="696" Height="612" VerticalAlignment="Top" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Строка" Binding="{Binding}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

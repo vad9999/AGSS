@@ -16,6 +16,7 @@ using AGSS.Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace AGSS
 {
@@ -46,7 +47,6 @@ namespace AGSS
             using (var context = new GravitySurveyOnDeleteNoAction())
             {
                 var AreaId = context.Areas.FirstOrDefault(a => a.ProjectId == ProjectId).AreaId;
-                //var Flights = context.Flights.Where(f => f.ProjectId  == ProjectId).ToList();
                 var ProfileIds = context.Profiles.Where(p => p.AreaId == AreaId).Select(p => p.ProfileId).ToList();
                 var ProfileCoordinatesId = context.ProfileCoordinates.Where(p => ProfileIds.Contains(p.ProfileId ?? -1)).Select(p => p.ProfileCoordinatesId).ToList();
 
@@ -59,46 +59,27 @@ namespace AGSS
                 AverAreaChannel2 = (double)context.Channel2s.Where(c => ProfileCoordinatesId.Contains(c.ProfileCoordinatesId ?? -1)).Select(c => c.MeasurementResult).ToList().Average();
                 AverAreaChannel3 = (double)context.Channel3s.Where(c => ProfileCoordinatesId.Contains(c.ProfileCoordinatesId ?? -1)).Select(c => c.MeasurementResult).ToList().Average();
 
-                int left = 10;
-                foreach(int profile in ProfileIds)
+                ObservableCollection <string> Data = new ObservableCollection<string>();
+                foreach (int profile in ProfileIds)
                 {
-                    int top = 78 + 34;
                     ProfileCoordinatesId = context.ProfileCoordinates.Where(p => p.ProfileId == profile).Select(p => p.ProfileCoordinatesId).ToList();
                     var AverChannel1 = context.Channel1s.Where(c => ProfileCoordinatesId.Contains(c.ProfileCoordinatesId ?? -1)).Select(c => c.MeasurementResult).ToList().Average();
                     var AverChannel2 = context.Channel2s.Where(c => ProfileCoordinatesId.Contains(c.ProfileCoordinatesId ?? -1)).Select(c => c.MeasurementResult).ToList().Average();
                     var AverChannel3 = context.Channel3s.Where(c => ProfileCoordinatesId.Contains(c.ProfileCoordinatesId ?? -1)).Select(c => c.MeasurementResult).ToList().Average();
 
-                    Label label = new Label
-                    {
-                        Content = $"Среднее значение канала 1 на профиле №{profile}: {AverChannel1}",
-                        FontSize = 14,
-                        Margin = new Thickness(left, top, 0, 0)
-                    };
-
-                    Label label1 = new Label
-                    {
-                        Content = $"Среднее значение канала 2 на профиле №{profile}: {AverChannel2}",
-                        FontSize = 14,
-                        Margin = new Thickness(left, top + 34, 0, 0)
-                    };
-
-                    Label label3 = new Label
-                    {
-                        Content = $"Среднее значение канала 3 на профиле №{profile}: {AverChannel2}",
-                        FontSize = 14,
-                        Margin = new Thickness(left, top + 34 + 34, 0, 0)
-                    };
-                    left += 350;
+                    Data.Add($"Среднее значение канала 1 на профиле №{profile}: {AverChannel1}");
+                    Data.Add($"Среднее значение канала 2 на профиле №{profile}: {AverChannel2}");
+                    Data.Add($"Среднее значение канала 3 на профиле №{profile}: {AverChannel3}");
                 }
-
+                DataGrid1.ItemsSource = Data;
             }
 
-            AreaChannel1.Content += AverAreaChannel1.ToString();
-            AreaChannel2.Content += AverAreaChannel2.ToString();
-            AreaChannel3.Content += AverAreaChannel3.ToString();
+            AreaChannel1.Content += AverAreaChannel1.ToString("F2");
+            AreaChannel2.Content += AverAreaChannel2.ToString("F2");
+            AreaChannel3.Content += AverAreaChannel3.ToString("F2");
 
-            Speed.Content += AverSpeed.ToString();
-            Height.Content += AverHeight.ToString();
+            Speed.Content += AverSpeed.ToString("F2");
+            Height.Content += AverHeight.ToString("F2");
             Time.Content += GetAverageFlightDuration(StartTime, EndTime).ToString();
         }
 

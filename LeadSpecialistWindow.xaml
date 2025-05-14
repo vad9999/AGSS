@@ -6,9 +6,8 @@
         xmlns:local="clr-namespace:AGSS"
         xmlns:oxy="http://oxyplot.org/wpf" x:Class="AGSS.LeadSpecialistWindow"
         mc:Ignorable="d"
-        Title="Окно специалиста" Height="801" Width="1598" Background="Gray">
+        Title="Ведущий специалист" Height="801" Width="1598" Background="Gray">
     <Grid>
-        <Label x:Name="ProjectLabel" Content="Проект" Background="LightGray"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="195" Height="31"/>
 
         <TreeView x:Name="DataTree" Width="195" VerticalAlignment="Top" SelectedItemChanged="DataTree_SelectedItemChanged" Margin="0,31,0,0" Height="263" HorizontalAlignment="Left" FontSize="22">
             <TreeViewItem Header="Площадь">
@@ -50,7 +49,6 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     <GridViewColumn Header="№ ведущего спец." DisplayMemberBinding="{Binding LeadSpecialistId}"/>
-                    <GridViewColumn Header="№ аналитика" DisplayMemberBinding="{Binding AnalystId}"/>
                     <GridViewColumn Header="№ Гл. инженера" DisplayMemberBinding="{Binding ChiefEnginnerId}"/>
                 </GridView>
             </ListView.View>
@@ -150,11 +148,11 @@
             <Label x:Name="threeLabel" Content="" HorizontalAlignment="Left" Margin="10,111,0,0" VerticalAlignment="Top"/>
             <Label x:Name="fourLabel" Content="" HorizontalAlignment="Left" Margin="10,142,0,0" VerticalAlignment="Top"/>
             <Label x:Name="fiveLabel" Content="" HorizontalAlignment="Left" Margin="10,173,0,0" VerticalAlignment="Top"/>
-            <TextBox x:Name="oneBox" HorizontalAlignment="Left" Margin="200,55,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
-            <TextBox x:Name="twoBox" HorizontalAlignment="Left" Margin="200,86,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
-            <TextBox x:Name="threeBox" HorizontalAlignment="Left" Margin="200,117,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
-            <TextBox x:Name="fourBox" HorizontalAlignment="Left" Margin="200,148,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
-            <TextBox x:Name="fiveBox" HorizontalAlignment="Left" Margin="200,179,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
+            <TextBox x:Name="oneBox" HorizontalAlignment="Left" Margin="200,55,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150" Visibility="Hidden"/>
+            <TextBox x:Name="twoBox" HorizontalAlignment="Left" Margin="200,86,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150" Visibility="Hidden"/>
+            <TextBox x:Name="threeBox" HorizontalAlignment="Left" Margin="200,117,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150" Visibility="Hidden"/>
+            <TextBox x:Name="fourBox" HorizontalAlignment="Left" Margin="200,148,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150" Visibility="Hidden"/>
+            <TextBox x:Name="fiveBox" HorizontalAlignment="Left" Margin="200,179,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150" Visibility="Hidden"/>
             <Button x:Name="AddBTN" Content="Добавить" HorizontalAlignment="Left" Margin="410,283,0,0" VerticalAlignment="Top" Height="45" Width="123" FontSize="16" Click="AddBTN_Click"/>
             <Button x:Name="DeleteBTN" Content="Удалить" HorizontalAlignment="Left" Margin="17,283,0,0" VerticalAlignment="Top" Height="45" Width="123" FontSize="16" Click="DeleteBTN_Click"/>
         </Grid>
@@ -166,6 +164,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button x:Name="AnalyticsBTN" Content="Посмотреть статистику" HorizontalAlignment="Left" Margin="195,359,0,0" VerticalAlignment="Top" Height="34" Width="148" Click="AnalyticsBTN_Click"/>
+        <Button x:Name="AnalyticsBTN" Content="Посмотреть статистику" HorizontalAlignment="Left" Margin="170,325,0,0" VerticalAlignment="Top" Height="45" Width="188" Click="AnalyticsBTN_Click" FontSize="14"/>
+        <ComboBox x:Name="ProjectCombo" HorizontalAlignment="Left" VerticalAlignment="Top" Width="195" Height="31" FontSize="14" SelectionChanged="ProjectCombo_SelectionChanged"/>
     </Grid>
 </Window>

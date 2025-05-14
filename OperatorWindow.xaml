@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AGSS"
         xmlns:oxy="http://oxyplot.org/wpf" x:Class="AGSS.OperatorWindow"
         mc:Ignorable="d"
-        Title="OperatorWindow" Height="798" Width="1595" Background="Gray">
+        Title="Оператор" Height="798" Width="1595" Background="Gray">
     <Grid>
         <TreeView x:Name="DataTree" Margin="0,31,0,0" HorizontalAlignment="Left" Width="195" SelectedItemChanged="DataTree_SelectedItemChanged" FontSize="22" Height="263" VerticalAlignment="Top">
             <TreeViewItem Header="Площадь">
@@ -41,28 +41,21 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="ID заказчика">
+                    <GridViewColumn Header="№ заказчика">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBox Text="{Binding CustomerId, UpdateSourceTrigger=PropertyChanged}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="ID ведущего спец.">
+                    <GridViewColumn Header="№ ведущего спец.">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBox Text="{Binding LeadSpecialistId, UpdateSourceTrigger=PropertyChanged}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="ID аналитика">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBox Text="{Binding AnalystId, UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="ID Гл. инженера">
+                    <GridViewColumn Header="№ Гл. инженера">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBox Text="{Binding ChiefEnginnerId, UpdateSourceTrigger=PropertyChanged}"/>
@@ -149,7 +142,7 @@
                 </TransformGroup>
             </oxy:PlotView.RenderTransform>
         </oxy:PlotView>
-        <ListView x:Name="CoordinateView" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="693,325,0,0" HorizontalAlignment="Left" Width="294" Height="426" VerticalAlignment="Top">
+        <ListView x:Name="CoordinateView" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="693,325,0,0" HorizontalAlignment="Left" Width="294" Height="426" VerticalAlignment="Top" Visibility="Hidden">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
@@ -163,11 +156,11 @@
             <Label x:Name="threeLabel" Content="" HorizontalAlignment="Left" Margin="10,111,0,0" VerticalAlignment="Top"/>
             <Label x:Name="fourLabel" Content="" HorizontalAlignment="Left" Margin="10,142,0,0" VerticalAlignment="Top"/>
             <Label x:Name="fiveLabel" Content="" HorizontalAlignment="Left" Margin="10,173,0,0" VerticalAlignment="Top"/>
-            <TextBox x:Name="oneBox" HorizontalAlignment="Left" Margin="200,55,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
-            <TextBox x:Name="twoBox" HorizontalAlignment="Left" Margin="200,86,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
-            <TextBox x:Name="threeBox" HorizontalAlignment="Left" Margin="200,117,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
-            <TextBox x:Name="fourBox" HorizontalAlignment="Left" Margin="200,148,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
-            <TextBox x:Name="fiveBox" HorizontalAlignment="Left" Margin="200,179,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
+            <TextBox x:Name="oneBox" HorizontalAlignment="Left" Margin="200,55,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150" Visibility="Hidden"/>
+            <TextBox x:Name="twoBox" HorizontalAlignment="Left" Margin="200,86,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150" Visibility="Hidden"/>
+            <TextBox x:Name="threeBox" HorizontalAlignment="Left" Margin="200,117,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150" Visibility="Hidden"/>
+            <TextBox x:Name="fourBox" HorizontalAlignment="Left" Margin="200,148,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150" Visibility="Hidden"/>
+            <TextBox x:Name="fiveBox" HorizontalAlignment="Left" Margin="200,179,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150" Visibility="Hidden"/>
             <Button x:Name="AddBTN" Content="Добавить" HorizontalAlignment="Left" Margin="410,283,0,0" VerticalAlignment="Top" Height="45" Width="123" FontSize="16" Click="AddBTN_Click"/>
             <Button x:Name="DeleteBTN" Content="Удалить" HorizontalAlignment="Left" Margin="17,283,0,0" VerticalAlignment="Top" Height="45" Width="123" FontSize="16" Click="DeleteBTN_Click"/>
         </Grid>
