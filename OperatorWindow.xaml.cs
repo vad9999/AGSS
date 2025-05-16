@@ -1451,5 +1451,12 @@ namespace AGSS
                 AddCombo.SelectedItem = null;
             }
         }
+
+        private void ExitBTN_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = new();
+            mainWindow.Show();
+            this.Close();
+        }
     }
 }

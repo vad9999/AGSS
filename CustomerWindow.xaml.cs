@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
@@ -18,6 +19,8 @@ using System.Windows.Shapes;
 using AGSS.Entities;
 using AGSS.Repositories;
 using Microsoft.Data.SqlClient;
+using OxyPlot.Series;
+using OxyPlot;
 
 namespace AGSS
 {
@@ -27,6 +30,26 @@ namespace AGSS
     public partial class CustomerWindow : Window
     {
         int ID;
+        int ProjectId;
+
+        private ObservableCollection<Area> areaData = new ObservableCollection<Area>();
+        private ObservableCollection<AreaCoordinate> areaCoordinates = new ObservableCollection<AreaCoordinate>();
+
+        private ObservableCollection<object> profileData = new ObservableCollection<object>();
+        private ObservableCollection<Profile> profilDataForGraph = new ObservableCollection<Profile>();
+        private ObservableCollection<ProfileCoordinate> profileCoordinates = new ObservableCollection<ProfileCoordinate>();
+
+        private ObservableCollection<object> channel1Data = new ObservableCollection<object>();
+        private ObservableCollection<object> channel2Data = new ObservableCollection<object>();
+        private ObservableCollection<object> channel3Data = new ObservableCollection<object>();
+
+        private ObservableCollection<Channel1> channel1DataForGraph = new ObservableCollection<Channel1>();
+        private ObservableCollection<Channel2> channel2DataForGraph = new ObservableCollection<Channel2>();
+        private ObservableCollection<Channel3> channel3DataForGraph = new ObservableCollection<Channel3>();
+
+        private ObservableCollection<Flight> flightData = new ObservableCollection<Flight>();
+        private ObservableCollection<Spectrometer> spectrometerData = new ObservableCollection<Spectrometer>();
+        private ObservableCollection<Metadata> metadataData = new ObservableCollection<Metadata>();
 
         public CustomerWindow(int id)
         {
@@ -48,10 +71,284 @@ namespace AGSS
        
         private void ExitBTN_Click(object sender, RoutedEventArgs e)
         {
+            MainWindow mainWindow = new();
+            mainWindow.Show();
             this.Close();
         }
 
-        private void DataTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        private void LoadDataArea()
+        {
+            areaData = new ObservableCollection<Area>(AreaRepository.GetDataOfArea(ProjectId));
+        }
+
+        private void LoadDataProfile()
+        {
+            profileData = new ObservableCollection<object>(ProfileRepository.GetDataOfProfile(
+                        AreaRepository.GetAreaIDByProjectID(ProjectId)));
+        }
+
+        private void LoadDataChannel1()
+        {
+            channel1Data = new ObservableCollection<object>(ChannelsRepository.GetDataOfChannel1(
+                        AreaRepository.GetAreaIDByProjectID(ProjectId)));
+        }
+
+        private void LoadDataChannel2()
+        {
+            channel2Data = new ObservableCollection<object>(ChannelsRepository.GetDataOfChannel2(
+                        AreaRepository.GetAreaIDByProjectID(ProjectId)));
+        }
+
+        private void LoadDataChannel3()
+        {
+            channel3Data = new ObservableCollection<object>(ChannelsRepository.GetDataOfChannel3(
+                        AreaRepository.GetAreaIDByProjectID(ProjectId)));
+        }
+
+        private void LoadDataFlight()
+        {
+            flightData = new ObservableCollection<Flight>(FlightRepository.GetDataOfFlight(ProjectId));
+        }
+
+        private void LoadDataSpectrometer()
+        {
+            spectrometerData = new ObservableCollection<Spectrometer>(SpectrometerRepository.GetDataOfSpectrometer(
+                                FlightRepository.GetFlightIDByProjectID(ProjectId)));
+        }
+
+        private void LoadDataMetadata()
+        {
+            metadataData = new ObservableCollection<Metadata>(MetadataRepository.GetDataOfMetadata(
+                                SpectrometerRepository.GetSpectrometerIDByFlightID(
+                                FlightRepository.GetFlightIDByProjectID(ProjectId))));
+        }
+
+        private void LoadDataAreaCoordinates()
+        {
+            areaCoordinates = new ObservableCollection<AreaCoordinate>(AreaRepository.GetAreaCoordinates(AreaRepository.GetAreaIDByProjectID(ProjectId)));
+        }
+
+        private void LoadDataProfileCoordinates()
+        {
+            profileCoordinates = new ObservableCollection<ProfileCoordinate>(ProfileRepository.GetProfileCoordinates(AreaRepository.GetAreaIDByProjectID(ProjectId)));
+        }
+
+        private void LoadDataProfileForGraph()
+        {
+            profilDataForGraph = new ObservableCollection<Profile>(ProfileRepository.GetProfiles(AreaRepository.GetAreaIDByProjectID(ProjectId)));
+        }
+
+        private void LoadDataChannel1ForGraph()
+        {
+            channel1DataForGraph = new ObservableCollection<Channel1>(ChannelsRepository.GetChannel1s(
+                                AreaRepository.GetAreaIDByProjectID(ProjectId)));
+        }
+
+        private void LoadDataChannel2ForGraph()
+        {
+            channel2DataForGraph = new ObservableCollection<Channel2>(ChannelsRepository.GetChannel2s(
+                                AreaRepository.GetAreaIDByProjectID(ProjectId)));
+        }
+
+        private void LoadDataChannel3ForGraph()
+        {
+            channel3DataForGraph = new ObservableCollection<Channel3>(ChannelsRepository.GetChannel3s(
+                                AreaRepository.GetAreaIDByProjectID(ProjectId)));
+        }
+
+        private void LoadAreaGraph()
+        {
+            LoadDataAreaCoordinates();
+            var plotModel = new PlotModel { Title = "График координат площади" };
+
+            plotModel.Series.Clear();
+
+            var series = new LineSeries { Title = "Линия", MarkerType = MarkerType.Circle };
+
+            foreach (var c in areaCoordinates)
+            {
+                series.Points.Add(new DataPoint((double)c.X, (double)c.Y));
+            }
+            if (areaCoordinates.Count > 0)
+            {
+                series.Points.Add(new DataPoint((double)areaCoordinates[0].X, (double)areaCoordinates[0].Y));
+            }
+
+            plotModel.Series.Add(series);
+            DataPlot.Model = plotModel;
+        }
+
+        private void LoadProfileGraph()
+        {
+            PlotModel model = new PlotModel { Title = "График профилей" };
+
+            model.Series.Clear();
+
+            List<LineSeries> lines = new List<LineSeries>();
+
+            var line1 = new LineSeries { MarkerType = MarkerType.Circle };
+
+            LoadDataAreaCoordinates();
+            LoadDataProfileForGraph();
+            LoadDataProfileCoordinates();
+
+            if (areaCoordinates.Count > 0)
+            {
+                foreach (var c in areaCoordinates)
+                {
+                    line1.Points.Add(new DataPoint((double)c.X, (double)c.Y));
+                }
+                line1.Points.Add(new DataPoint((double)areaCoordinates[0].X, (double)areaCoordinates[0].Y));
+
+                lines.Add(line1);
+
+                if (profileCoordinates.Count > 0)
+                {
+                    foreach (var p in profilDataForGraph)
+                    {
+                        LineSeries line = new LineSeries { MarkerType = MarkerType.Circle, Title = $"Профиль {p.ProfileId}" };
+                        foreach (var c in profileCoordinates)
+                        {
+                            if (c.ProfileId == p.ProfileId)
+                            {
+                                line.Points.Add(new DataPoint((double)c.X, (double)c.Y));
+                            }
+                        }
+                        lines.Add(line);
+                    }
+                }
+
+                foreach (var l in lines)
+                    model.Series.Add(l);
+
+                DataPlot.Model = model;
+            }
+        }
+
+        private void LoadChannel1Graph()
+        {
+            PlotModel model = new PlotModel { Title = "График измерений канала 1" };
+
+            model.Series.Clear();
+
+            List<LineSeries> lines = new List<LineSeries>();
+
+            LoadDataProfileForGraph();
+            LoadDataProfileCoordinates();
+            LoadDataChannel1ForGraph();
+
+            if (channel1DataForGraph.Count > 0 && profileCoordinates.Count > 0 && profilDataForGraph.Count > 0)
+            {
+                foreach (var p in profilDataForGraph)
+                {
+                    LineSeries line = new LineSeries { MarkerType = MarkerType.Circle, Title = $"Профиль {p.ProfileId}" };
+                    int i = 1;
+                    foreach (var coord in profileCoordinates)
+                    {
+                        if (p.ProfileId == coord.ProfileId)
+                        {
+                            foreach (var c in channel1DataForGraph)
+                            {
+                                if (coord.ProfileCoordinatesId == c.ProfileCoordinatesId)
+                                {
+                                    line.Points.Add(new DataPoint(i++, (double)c.MeasurementResult));
+                                }
+                            }
+                        }
+                    }
+                    lines.Add(line);
+                }
+
+                foreach (var l in lines)
+                    model.Series.Add(l);
+
+                DataPlot.Model = model;
+            }
+        }
+
+        private void LoadChannel2Graph()
+        {
+            PlotModel model = new PlotModel { Title = "График измерений канала 2" };
+
+            model.Series.Clear();
+
+            List<LineSeries> lines = new List<LineSeries>();
+
+            LoadDataChannel2ForGraph();
+            LoadDataProfileForGraph();
+            LoadDataProfileCoordinates();
+
+            if (channel2DataForGraph.Count > 0 && profileCoordinates.Count > 0 && profilDataForGraph.Count > 0)
+            {
+                foreach (var p in profilDataForGraph)
+                {
+                    LineSeries line = new LineSeries { MarkerType = MarkerType.Circle, Title = $"Профиль {p.ProfileId}" };
+                    int i = 1;
+                    foreach (var coord in profileCoordinates)
+                    {
+                        if (p.ProfileId == coord.ProfileId)
+                        {
+                            foreach (var c in channel2DataForGraph)
+                            {
+                                if (coord.ProfileCoordinatesId == c.ProfileCoordinatesId)
+                                {
+                                    line.Points.Add(new DataPoint(i++, (double)c.MeasurementResult));
+                                }
+                            }
+                        }
+                    }
+                    lines.Add(line);
+                }
+
+                foreach (var l in lines)
+                    model.Series.Add(l);
+
+                DataPlot.Model = model;
+            }
+        }
+
+        private void LoadChannel3Graph()
+        {
+            PlotModel model = new PlotModel { Title = "График измерений канала 3" };
+
+            model.Series.Clear();
+
+            List<LineSeries> lines = new List<LineSeries>();
+
+            LoadDataChannel3ForGraph();
+            LoadDataProfileForGraph();
+            LoadDataProfileCoordinates();
+
+            if (channel3DataForGraph.Count > 0 && profileCoordinates.Count > 0 && profilDataForGraph.Count > 0)
+            {
+                foreach (var p in profilDataForGraph)
+                {
+                    LineSeries line = new LineSeries { MarkerType = MarkerType.Circle, Title = $"Профиль {p.ProfileId}" };
+                    int i = 1;
+                    foreach (var coord in profileCoordinates)
+                    {
+                        if (p.ProfileId == coord.ProfileId)
+                        {
+                            foreach (var c in channel3DataForGraph)
+                            {
+                                if (coord.ProfileCoordinatesId == c.ProfileCoordinatesId)
+                                {
+                                    line.Points.Add(new DataPoint(i++, (double)c.MeasurementResult));
+                                }
+                            }
+                        }
+                    }
+                    lines.Add(line);
+                }
+
+                foreach (var l in lines)
+                    model.Series.Add(l);
+
+                DataPlot.Model = model;
+            }
+        }
+
+        private int ReturnNumberDataTree()
         {
             if (DataTree.SelectedItem is TreeViewItem selectedItem)
             {
@@ -60,84 +357,79 @@ namespace AGSS
                     switch (selectedItem.Header.ToString())
                     {
                         case "Площадь":
-                            AreaColumns();
-
-                            var areaData = AreaRepository.GetDataOfArea(
-                                ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString()));
-
-                            Data.ItemsSource = areaData;
-                            break;
+                            return 1;
                         case "Профиль":
-                            ProfileColumns();
-
-                            var profileData = ProfileRepository.GetDataOfProfile(
-                                AreaRepository.GetAreaIDByProjectID(
-                                    ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString())));
-
-                            Data.ItemsSource = profileData;
-                            break;
+                            return 2;
                         case "Канал 1":
-                            ChannelsColumns();
-
-                            var channel1Data = ChannelsRepository.GetDataOfChannel1(
-                                AreaRepository.GetAreaIDByProjectID(
-                                    ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString())));
-
-                            Data.ItemsSource = channel1Data;
-                            break;
+                            return 3;
                         case "Канал 2":
-
-                            var channel2Data = ChannelsRepository.GetDataOfChannel2(
-                                AreaRepository.GetAreaIDByProjectID(
-                                    ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString())));
-
-                            Data.ItemsSource = channel2Data;
-                            ChannelsColumns();
-                            break;
+                            return 4;
                         case "Канал 3":
-
-                            var channel3Data = ChannelsRepository.GetDataOfChannel3(
-                                AreaRepository.GetAreaIDByProjectID(
-                                    ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString())));
-
-                            Data.ItemsSource = channel3Data;
-                            ChannelsColumns();
-                            break;
+                            return 5;
                         case "Полет":
-                            FlightColumns();
-
-                            var flightData = FlightRepository.GetDataOfFlight(
-                                ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString()));
-
-                            Data.ItemsSource = flightData;
-                            break;
+                            return 6;
                         case "Спектрометр":
-                            SpectrometerColumns();
-
-                            var specData = SpectrometerRepository.GetDataOfSpectrometer(
-                                FlightRepository.GetFlightIDByProjectID(
-                                    ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString())));
-
-                            Data.ItemsSource = specData;
-                            break;
+                            return 7;
                         case "Метаданные":
-                            MetadataColumns();
-
-                            var metaData = MetadataRepository.GetDataOfMetadata(
-                                SpectrometerRepository.GetSpectrometerIDByFlightID(
-                                FlightRepository.GetFlightIDByProjectID(
-                                    ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString()))));
-
-                            Data.ItemsSource = metaData;
-                            break;
+                            return 8;
                     }
                 }
             }
+            return 0;
         }
 
-        
-
-        
+        private void DataTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            int choise = ReturnNumberDataTree();
+            switch (choise)
+            {
+                case 1:
+                    AreaColumns();
+                    LoadDataArea();
+                    Data.ItemsSource = areaData;
+                    LoadAreaGraph();
+                    break;
+                case 2:
+                    ProfileColumns();
+                    LoadDataProfile();
+                    Data.ItemsSource = profileData;
+                    LoadProfileGraph();
+                    break;
+                case 3:
+                    ChannelsColumns();
+                    LoadDataChannel1();
+                    Data.ItemsSource = channel1Data;
+                    LoadChannel1Graph();
+                    break;
+                case 4:
+                    LoadDataChannel2();
+                    Data.ItemsSource = channel2Data;
+                    ChannelsColumns();
+                    LoadChannel2Graph();
+                    break;
+                case 5:
+                    LoadDataChannel3();
+                    Data.ItemsSource = channel3Data;
+                    ChannelsColumns();
+                    LoadChannel3Graph();
+                    break;
+                case 6:
+                    FlightColumns();
+                    LoadDataFlight();
+                    Data.ItemsSource = flightData;
+                    break;
+                case 7:
+                    SpectrometerColumns();
+                    LoadDataSpectrometer();
+                    Data.ItemsSource = spectrometerData;
+                    break;
+                case 8:
+                    MetadataColumns();
+                    LoadDataMetadata();
+                    Data.ItemsSource = metadataData;
+                    break;
+            }
+        }
 
         private void AreaColumns()
         {
@@ -218,6 +510,31 @@ namespace AGSS
                     new GridViewColumn { Header = "Дата конца полета", DisplayMemberBinding = new Binding("Notes") }
                 }
             };
+        }
+
+        private void AnalysticBTN_Click(object sender, RoutedEventArgs e)
+        {
+            if(ProjectCombo.SelectedItem != null)
+            {
+                AnalyticsWindow analyticsWindow = new AnalyticsWindow(ProjectId);
+                analyticsWindow.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Выберите проект!");
+            }
+        }
+
+        private void ProjectCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(ProjectCombo.SelectedItem != null)
+            {
+                ProjectId = ProjectRepository.GetIDByProjectName(ProjectCombo.SelectedItem.ToString());
+            }
+            else
+            {
+                MessageBox.Show("Выберите проект!");
+            }
         }
     }
 }

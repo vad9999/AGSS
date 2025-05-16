@@ -1477,5 +1477,12 @@ namespace AGSS
                 MessageBox.Show("Выберите проект");
             }
         }
+
+        private void ExitBTN_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = new();
+            mainWindow.Show();
+            this.Close();
+        }
     }
 }

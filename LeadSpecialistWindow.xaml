@@ -155,6 +155,7 @@
             <TextBox x:Name="fiveBox" HorizontalAlignment="Left" Margin="200,179,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150" Visibility="Hidden"/>
             <Button x:Name="AddBTN" Content="Добавить" HorizontalAlignment="Left" Margin="410,283,0,0" VerticalAlignment="Top" Height="45" Width="123" FontSize="16" Click="AddBTN_Click"/>
             <Button x:Name="DeleteBTN" Content="Удалить" HorizontalAlignment="Left" Margin="17,283,0,0" VerticalAlignment="Top" Height="45" Width="123" FontSize="16" Click="DeleteBTN_Click"/>
+            <Button x:Name="ExitBTN" Content="Выход" HorizontalAlignment="Left" Margin="471,10,0,0" VerticalAlignment="Top" Height="33" Width="89" FontSize="14" Click="ExitBTN_Click"/>
         </Grid>
         <Label Content="Добавление и удаление данных" Margin="990,0,0,0" VerticalAlignment="Top" Height="31" HorizontalAlignment="Left" Width="570" FontSize="16" FontWeight="Bold" HorizontalContentAlignment="Center"/>
         <ListView x:Name="CoordinateView" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="696,424,0,0" HorizontalAlignment="Left" Width="294" Height="326" VerticalAlignment="Top" Visibility="Hidden">
