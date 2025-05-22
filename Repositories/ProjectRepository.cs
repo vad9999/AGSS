@@ -52,39 +52,6 @@ namespace AGSS.Repositories
             }
         }
 
-        public static int? GetSpecialistIDByProjectID(int ProjectID)
-        {
-            using (var context = new GravitySurveyOnDeleteNoAction())
-            {
-                return context.Projects
-                    .Where(p => p.ProjectId == ProjectID)
-                    .Select(p => p.LeadSpecialistId)
-                    .FirstOrDefault();
-            }
-        }
-
-        public static int? GetEngineerIDByProjectID(int ProjectID)
-        {
-            using (var context = new GravitySurveyOnDeleteNoAction())
-            {
-                return context.Projects
-                    .Where(p => p.ProjectId == ProjectID)
-                    .Select(p => p.ChiefEnginnerId)
-                    .FirstOrDefault();
-            }
-        }
-
-        //public static int? GetAnalystIDByProjectID(int ProjectID)
-        //{
-        //    using (var context = new GravitySurveyOnDeleteNoAction())
-        //    {
-        //        return context.Projects
-        //            .Where(p => p.ProjectId == ProjectID)
-        //            .Select(p => p.AnalystId)
-        //            .FirstOrDefault();
-        //    }
-        //}
-
         public static void SaveChanges(Project pr)
         {
             using (var context = new GravitySurveyOnDeleteNoAction())
@@ -99,14 +66,6 @@ namespace AGSS.Repositories
             using(var context = new GravitySurveyOnDeleteNoAction())
             {
                 return context.Projects.Where(e => e.LeadSpecialistId == specialist.LeadSpecialistId).ToList(); ;
-            }
-        }
-
-        public static string GetProjectNameById(int ProjectID)
-        {
-            using(var context = new GravitySurveyOnDeleteNoAction())
-            {
-                return context.Projects.FirstOrDefault(p => p.ProjectId == ProjectID).ProjectName;
             }
         }
     }

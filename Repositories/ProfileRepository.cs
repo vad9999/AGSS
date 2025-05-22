@@ -136,13 +136,5 @@ namespace AGSS.Repositories
                 return context.ProfileCoordinates.Any(p => p.ProfileCoordinatesId == coord);
             }
         }
-
-        public static List<ProfileCoordinate> GetCoordByProfile(int profile)
-        {
-            using(var context = new GravitySurveyOnDeleteNoAction())
-            {
-                return context.ProfileCoordinates.Where(p => p.ProfileCoordinatesId == profile).ToList();
-            }
-        }
     }
 }

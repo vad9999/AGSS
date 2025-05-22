@@ -30,18 +30,6 @@ namespace AGSS.Repositories
             }
         }
 
-        public static int? GetOperatorIDByFlightID(int flight)
-        {
-            using (var context = new GravitySurveyOnDeleteNoAction())
-            {
-                return context.Flights
-                    .Where(f => f.FlightId == flight)
-                    .Select(f => f.OperatorId)
-                    .FirstOrDefault();
-            }
-        }
-
-
         public static void SaveChanges(Flight pr)
         {
             using (var context = new GravitySurveyOnDeleteNoAction())

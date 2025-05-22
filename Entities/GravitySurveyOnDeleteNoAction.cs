@@ -47,24 +47,10 @@ public partial class GravitySurveyOnDeleteNoAction : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer(@"Server=localhost\SQLEXPRESS;Database=AGSS;Trusted_Connection=True;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer(@"Server=DBSRV\ag2024;Database=AGSS;Trusted_Connection=True;TrustServerCertificate=True;");
     //localhost\SQLEXPRESS
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //modelBuilder.Entity<Analyst>(entity =>
-        //{
-        //    entity.HasKey(e => e.AnalystId).HasName("PK__Analyst__DEC7CE295D87D1B5");
-
-        //    entity.ToTable("Analyst");
-
-        //    entity.Property(e => e.AnalystId).HasColumnName("AnalystID");
-        //    entity.Property(e => e.Address).HasMaxLength(255);
-        //    entity.Property(e => e.FullName).HasMaxLength(255);
-        //    entity.Property(e => e.Login).HasMaxLength(15);
-        //    entity.Property(e => e.Password).HasMaxLength(15);
-        //    entity.Property(e => e.Phone).HasMaxLength(50);
-        //});
-
         modelBuilder.Entity<Area>(entity =>
         {
             entity.HasKey(e => e.AreaId).HasName("PK__Area__70B820282852E5B2");

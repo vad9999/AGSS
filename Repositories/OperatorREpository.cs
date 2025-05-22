@@ -34,14 +34,5 @@ namespace AGSS.Repositories
                 context.SaveChanges();
             }
         }
-
-        public static List<string> GetProjectsByOperator(Operator @operator)
-        {
-            using(var context = new GravitySurveyOnDeleteNoAction())
-            {
-                var flights = context.Flights.Where(f => f.OperatorId == @operator.OperatorId).Select(f => f.ProjectId).ToList();
-                return context.Projects.Where(p => flights.Contains(p.ProjectId)).Select(p => p.ProjectName).ToList();
-            }
-        }
     }
 }

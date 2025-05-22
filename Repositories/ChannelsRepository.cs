@@ -198,20 +198,5 @@ namespace AGSS.Repositories
                 context.SaveChanges();
             }
         }
-
-        public static List<Channel1> GetChannel1ByProfile(int profile)
-        {
-            using (var context = new GravitySurveyOnDeleteNoAction())
-            {
-                var coordinates = context.ProfileCoordinates
-                    .Where(c => c.ProfileId == profile)
-                    .Select(c => c.ProfileCoordinatesId)
-                    .ToList();
-
-                return context.Channel1s
-                    .Where(c => coordinates.Contains(c.ProfileCoordinatesId ?? -1))
-                    .ToList();
-            }
-        }
     }
 }
